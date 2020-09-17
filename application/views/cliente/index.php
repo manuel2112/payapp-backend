@@ -57,6 +57,14 @@
 				<td class="table-primary">DESCRIPCIÓN</td>
 				<td><?php echo $empresa->EMPRESA_DESCRIPCION?></td>
 			</tr>
+			<tr>
+				<td class="table-primary">T° DE NEGOCIO</td>
+				<td>
+					<?php foreach( $tipoNegocio as $tipo ){ ?>
+						-<strong><?php echo $tipo->TIPO_NEGOCIO_NOMBRE ?></strong>: <?php echo $tipo->EMPRESA_TIPO_NEGOCIO_OBS ?> <br>
+					<?php } ?>
+				</td>
+			</tr>
 		</table>
 		
 	
@@ -201,6 +209,32 @@ MODAL EDITAR EMPRESA
 						<input type="file" class="EditFotoLogoCliente" name="EditFotoLogoCliente" id="EditFotoLogoCliente">
 						<p class="help-block">Peso máximo de la imagen 512KB</p>
               			<input type="hidden" name="fotoActualEmpresa" id="fotoActualEmpresa">
+					</div>
+					
+					<div class="form-group">
+					<fieldset class="scheduler-border">
+					<legend class="scheduler-border">TIPO DE NEGOCIO</legend>
+
+						<div class="control-group">
+
+							<?php $i = 0 ?>
+							<?php foreach( $tipoNegocioEdit as $negocio){ ?>
+								<div class="form-check mb-3">
+									<label class="form-check-label">
+										<input type="checkbox" 
+											name="editTipoNegocio[]" 
+											class="form-check-input" 
+											value="<?php echo $negocio['TIPO_NEGOCIO_ID'] ?>"
+											<?php echo $negocio['CHECKED']  ?>>
+											<?php echo $negocio['TIPO_NEGOCIO_NOMBRE'] ?>
+									</label>
+								<textarea class="form-control" rows="1" name="editTipoNegocioObs[]" placeholder="OBSERVACIÓN DE <?php echo $negocio['TIPO_NEGOCIO_NOMBRE'] ?>..."><?php echo $negocio['OBS'] ?></textarea>							
+								</div>
+							<?php } ?>
+
+						</div>
+
+					</fieldset>
 					</div>
 					
         		</div>

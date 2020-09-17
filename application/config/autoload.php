@@ -132,6 +132,6 @@ $autoload['language'] = array();
 |
 |	$autoload['model'] = array('first_model' => 'first');
 */
-$autoload['model'] = array('login_model', 'admin_model', 'empresa_model', 'ciudad_model', 'tipo_producto_model', 'producto_model', 'producto_variable_model', 'producto_foto_model', 'horario_model');
+$autoload['model'] = array('login_model', 'admin_model', 'empresa_model', 'ciudad_model', 'tipo_producto_model', 'producto_model', 'producto_variable_model', 'producto_foto_model', 'horario_model', 'tipo_negocio_model','empresa_negocio_model');
 
 //$autoload['model'] = array('login_model', 'admin_model', 'tipo_negocio_model', 'tipo_comida_model', 'ciudad_model', 'tipo_pago_model', 'empresa_model', 'dia_model', 'empresa_horario_model', 'temp_empresa_horario_model', 'empresa_foto_model', 'destacado_model', 'destacado_imagen_model', 'empresa_notificacion_model', 'estadistica_model','estadistica_back_model', 'tipo_compra_model', 'tipo_monto_model', 'plan_model', 'correo_model','base_model');

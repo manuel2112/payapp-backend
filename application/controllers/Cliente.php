@@ -19,7 +19,24 @@ class Cliente extends CI_Controller {
 		$data['empresaUpdtHorario']		= horarioPorEmpresaSingle($this->session_id);
 		$data['empresa'] 				= $this->empresa_model->getEmpresaRow($this->session_id);
 		$data['horarioEmpresa']			= $this->horario_model->getHorarioPorEmpresa($this->session_id);
+		$data['tipoNegocio']			= $this->empresa_negocio_model->getEmpresaNegocioActive($this->session_id);
 
+		$tipoNegocio = $this->tipo_negocio_model->getTiposNegocioActive();
+		
+		foreach ($tipoNegocio as $tipo) {
+			$obs = '';
+			$checked = FALSE;
+			$existe = $this->empresa_negocio_model->getEmpresaNegocioRow($tipo->TIPO_NEGOCIO_ID,$this->session_id);
+			if( $existe ){
+				$obs = $existe->EMPRESA_TIPO_NEGOCIO_OBS;
+				$checked = 'checked';
+			}
+			$tipoarray[] = array('TIPO_NEGOCIO_ID' => $tipo->TIPO_NEGOCIO_ID,
+								 'TIPO_NEGOCIO_NOMBRE' => $tipo->TIPO_NEGOCIO_NOMBRE, 
+								 'OBS' => $obs, 
+								 'CHECKED' => $checked);
+		}
+		$data['tipoNegocioEdit'] = $tipoarray;
 		$this->layout->view('index',$data);
 	}
 	
@@ -73,6 +90,7 @@ class Cliente extends CI_Controller {
   
 	public function updatecliente()
 	{
+		$data 			= array();
 		$idEmpresa		= $this->input->post('idCliente');
 		$txtDireccion 	= trim($this->input->post('txtEditDireccion')) ? ucwords(strtolower(trim($this->input->post('txtEditDireccion')))) : NULL ;
 		$txtFono 		= trim($this->input->post('txtEditFono')) ? trim($this->input->post('txtEditFono')) : NULL ;
@@ -81,9 +99,31 @@ class Cliente extends CI_Controller {
 		$txtInstagram 	= trim($this->input->post('txtEditInstagram')) ? trim($this->input->post('txtEditInstagram')) : NULL ;
 		$txtDescripcion	= trim($this->input->post('txtEditDescripcion')) ? trim($this->input->post('txtEditDescripcion')) : NULL ;
 		$ruta 			= NULL;
-		
+		$tipoNegocio	= $this->input->post('tipoNegocio') ;
+		$tipoNegocio 	= explode(",", $tipoNegocio);
+		$tipoNegocioObs	= $this->input->post('tipoNegocioObs') ;
+		// $tipoNegocioObs	= explode(",", $tipoNegocioObs);
+		$tipoNegocioObs	= json_decode($tipoNegocioObs);
+		$tipoNegocioTodos = $this->tipo_negocio_model->getTiposNegocioActive();
+
 		//UPDATE EMPRESA
 		$this->empresa_model->updateCliente($idEmpresa, $txtDireccion, $txtFono, $txtUrl, $txtFacebook, $txtInstagram, $txtDescripcion);
+
+		//UPDATE T° NEGOCIO
+		if( $tipoNegocio ){
+			$this->empresa_negocio_model->updateEmpresaNegocio($idEmpresa);
+			$i = 0;
+			foreach( $tipoNegocioTodos as $x){
+				$idT = $x->TIPO_NEGOCIO_ID;
+				foreach( $tipoNegocio as $tipo ){
+					if( $tipo == $idT ){
+						$this->empresa_negocio_model->insertEmpresaNegocio($tipo, $idEmpresa, trim($tipoNegocioObs[$i]));
+						break;
+					}
+				}
+				$i++;
+			}
+		}
 
 		//VALIDAR IMAGEN
 		if( isset($_FILES["imagen"]["tmp_name"]) ){
@@ -121,8 +161,7 @@ class Cliente extends CI_Controller {
 			}
 			$this->empresa_model->updateEmpresaLogo($idEmpresa, $ruta);
 		}
-
-		$data 		= array();	
+			
 		$data['ok'] = '1' ;		
 		echo json_encode($data);
 	}

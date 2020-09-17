@@ -16,6 +16,7 @@ class Empresa extends CI_Controller {
 	public function index()
 	{
 		$data["ciudades"]	= $this->ciudad_model->getCiudad();
+		$data["negocios"]	= $this->tipo_negocio_model->getTiposNegocioActive();
 		$this->layout->view('index',$data);
 	}
     
@@ -89,6 +90,8 @@ class Empresa extends CI_Controller {
 		$txtEmpresaUrlInstagram 	= trim($this->input->post('txtEmpresaUrlInstagram')) ? trim($this->input->post('txtEmpresaUrlInstagram')) : NULL ;
 		$txtEmpresaCodigoComercio 	= trim($this->input->post('txtEmpresaCodigoComercio')) ? trim($this->input->post('txtEmpresaCodigoComercio')) : NULL ;
 		$txtEmpresaDescripcion 		= trim($this->input->post('txtEmpresaDescripcion')) ? trim($this->input->post('txtEmpresaDescripcion')) : NULL ;
+		$tipoNegocio 				= $this->input->post('tipoNegocio') ;
+		$tipoNegocioObs 			= $this->input->post('tipoNegocioObs') ;
 		
 		$fechaIngreso				= fechaNow();
 		$txtEmpresaPass 			= NULL;
@@ -98,6 +101,12 @@ class Empresa extends CI_Controller {
 		
 		//INGRESAR EMPRESA
 		$idEmpresa = $this->empresa_model->insertEmpresa($txtEmpresaNombre, $txtEmpresaRazon, $txtEmpresaRut, $txtEmpresaDireccion, $txtEmpresaLatitud, $txtEmpresaLongitud, $txtEmpresaFono, $txtEmpresaEmail, $txtEmpresaDescripcion, $txtEmpresaRutaLogo, $txtEmpresaUrlWeb, $txtEmpresaUrlFacebook, $txtEmpresaUrlInstagram, $txtEmpresaPass, $txtEmpresaPermiso, $txtEmpresaCodigoComercio, $cmbCiudad, $txtEmpresaTipoDisenno, $fechaIngreso);
+
+		if( $tipoNegocio ){
+			foreach( $tipoNegocio as $tipo ){
+				$this->empresa_negocio_model->insertEmpresaNegocio($tipo, $idEmpresa, trim($tipoNegocioObs[$tipo]));
+			}
+		}
 		
 		
 		//VALIDAR IMAGEN
@@ -157,16 +166,6 @@ class Empresa extends CI_Controller {
 		$this->empresa_model->updateEmpresaEstado($idEmpresa,$estado);
 		
 		if( $estado == 0 ){
-			//eliminar valores relacionados
-//			$this->empresa_model->updateEmpresaPorCampo($idEmpresa,'EMPRESA_PERMISO',$estado);
-//			$this->destacado_model->updateDestacadoEstado($idEmpresa,$estado);
-//			$this->empresa_foto_model->updateEmpresaFotoEstado($idEmpresa,$estado);
-//			$this->empresa_horario_model->deleteEmpresaAllHorario($idEmpresa);
-//			$this->empresa_notificacion_model->updateNotificacionEmpresaDown($idEmpresa);
-//			$plan = $this->plan_model->getEmpresaPlanLastRow($idEmpresa);
-//			$this->plan_model->updateEmpresaPlanLastRow($plan->EMPRESA_PLAN_ID,fechaNow());
-//			$this->plan_model->updateEmpresaPlan($idEmpresa);
-
 			$title	= "Eliminada";
 			$text	= "La Empresa ha sido eliminada";
 		}else{
@@ -184,10 +183,35 @@ class Empresa extends CI_Controller {
 	{
 		$idEmpresa 	= trim($this->input->post('idEmpresa'));
 		$data = array();
-		$data['empresa'] 			= $this->empresa_model->getEmpresaRow($idEmpresa);
+		$data['empresa']		= $this->empresa_model->getEmpresaRow($idEmpresa);
+		$data['tipoNegocio']	= $this->empresa_negocio_model->getEmpresaNegocioActive($idEmpresa);
 		echo json_encode($data);
 	}
+	public function geteditarval()
+	{
+		$idEmpresa 	= trim($this->input->post('idEmpresa'));
+		$data = array();
+		$data['empresa']		= $this->empresa_model->getEmpresaRow($idEmpresa);
 
+		$tipoNegocio = $this->tipo_negocio_model->getTiposNegocioActive();
+		
+		foreach ($tipoNegocio as $tipo) {
+			$obs = '';
+			$checked = FALSE;
+			$existe = $this->empresa_negocio_model->getEmpresaNegocioRow($tipo->TIPO_NEGOCIO_ID,$idEmpresa);
+			if( $existe ){
+				$obs = $existe->EMPRESA_TIPO_NEGOCIO_OBS;
+				$checked = 'checked';
+			}
+			$tipoarray[] = array('TIPO_NEGOCIO_ID' => $tipo->TIPO_NEGOCIO_ID,
+								 'TIPO_NEGOCIO_NOMBRE' => $tipo->TIPO_NEGOCIO_NOMBRE, 
+								 'OBS' => $obs, 
+								 'CHECKED' => $checked);
+		}
+
+		$data['tipoNegocio'] = $tipoarray;
+		echo json_encode($data);
+	}
 	public function editar()
 	{
 		$idEmpresa		= $this->input->post('idEditEmpresa');
@@ -206,9 +230,19 @@ class Empresa extends CI_Controller {
 		$txtComercio	= trim($this->input->post('txtEditComercio')) ? trim($this->input->post('txtEditComercio')) : NULL ;
 		$cmbCiudad 		= trim($this->input->post('cmbEditCiudad')) ? trim($this->input->post('cmbEditCiudad')) : NULL ;
 		$ruta 			= NULL;
+		$tipoNegocio	= $this->input->post('tipoNegocio') ;
+		$tipoNegocioObs	= $this->input->post('tipoNegocioObs') ;
 
 		//UPDATE EMPRESA
-		$this->empresa_model->updateEmpresa($idEmpresa, $txtEmpresa, $txtRazon, $txtRut, $txtDireccion, $txtLatitud, $txtLongitud, $txtFono, $txtEmail, $txtDescripcion, $txtWeb, $txtFacebook, $txtInstagram, $txtComercio, $cmbCiudad);		
+		$this->empresa_model->updateEmpresa($idEmpresa, $txtEmpresa, $txtRazon, $txtRut, $txtDireccion, $txtLatitud, $txtLongitud, $txtFono, $txtEmail, $txtDescripcion, $txtWeb, $txtFacebook, $txtInstagram, $txtComercio, $cmbCiudad);
+
+		//UPDATE T° NEGOCIO
+		if( $tipoNegocio ){
+			$this->empresa_negocio_model->updateEmpresaNegocio($idEmpresa);
+			foreach( $tipoNegocio as $tipo ){
+				$this->empresa_negocio_model->insertEmpresaNegocio($tipo, $idEmpresa, trim($tipoNegocioObs[$tipo]));
+			}
+		}
 
 		//VALIDAR IMAGEN
 		if( !empty($_FILES["EditFotoEmpresa"]["tmp_name"]) ){

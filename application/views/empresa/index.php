@@ -196,6 +196,29 @@ MODAL AGREGAR EMPRESA
         		</div>
         		
         	</div><!-- PIE ROW -->
+
+			<div class="row">
+				<div class="col-12">
+				<fieldset class="scheduler-border">
+				<legend class="scheduler-border">TIPO DE NEGOCIO</legend>
+
+					<div class="control-group">
+
+						<?php $i = 1 ?>
+						<?php foreach( $negocios as $negocio){ ?>			
+							<div class="form-check mb-3">
+								<label class="form-check-label">
+									<input type="checkbox" name="tipoNegocio[]" class="form-check-input" value="<?php echo $negocio->TIPO_NEGOCIO_ID  ?>"><?php echo $negocio->TIPO_NEGOCIO_NOMBRE ?>
+								</label>
+							<textarea class="form-control" rows="1" name="tipoNegocioObs[<?php echo $i++ ?>]" placeholder="OBSERVACIÓN DE <?php echo $negocio->TIPO_NEGOCIO_NOMBRE ?>..."></textarea>							
+							</div>
+						<?php } ?>
+
+					</div>
+
+				</fieldset>
+				</div>
+			</div>
         
 		</div>
 
@@ -387,6 +410,21 @@ MODAL EDITAR EMPRESA
 
         	</div><!-- PIE ROW -->
 
+			<div class="row">
+				<div class="col-12">
+				<fieldset class="scheduler-border">
+				<legend class="scheduler-border">TIPO DE NEGOCIO</legend>
+
+					<div class="control-group">
+
+					<div id="verEditTipoNegocio"></div>
+
+					</div>
+
+				</fieldset>
+				</div>
+			</div>
+
 		</div>
 
         <!--=====================================
@@ -496,6 +534,10 @@ MODAL VER EMPRESA
 						<tr>
 							<td class="table-primary">INGRESO</td>
 							<td><span id="verIngresoEmpresa"></span></td>
+						</tr>
+						<tr>
+							<td class="table-primary">T° NEGOCIO</td>
+							<td><span id="verTipoNegocio"></span></td>
 						</tr>
 					</table>
         		</div>

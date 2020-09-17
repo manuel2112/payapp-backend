@@ -1,164 +1,164 @@
 /*=============================================
 UPDATE PASSWORD
 =============================================*/
-$(document).ready(function(){
-	$("#formpassword").on("click", ".btnEditarPw", function(){
+$(document).ready(function() {
+    $("#formpassword").on("click", ".btnEditarPw", function() {
 
-		$('#loadingpw').html('<img src="' + base_url + 'public/images/loading.gif" width="30">');
-		var idCliente	= $("#idCliente").val();
-		var actualPw	= $("#actualPw").val();
-		var nuevoPw		= $("#nuevoPw").val();
-		var repitePw	= $("#repitePw").val();
-		
-		var dataString	= {idCliente:idCliente,actualPw:actualPw,nuevoPw:nuevoPw,repitePw:repitePw};
+        $('#loadingpw').html('<img src="' + base_url + 'public/images/loading.gif" width="30">');
+        var idCliente = $("#idCliente").val();
+        var actualPw = $("#actualPw").val();
+        var nuevoPw = $("#nuevoPw").val();
+        var repitePw = $("#repitePw").val();
 
-		$.ajax({
+        var dataString = { idCliente: idCliente, actualPw: actualPw, nuevoPw: nuevoPw, repitePw: repitePw };
 
-			url: base_url + "cliente/passwordeditajax",
-			method: "POST",
-			data: dataString,
-			success: function(respuesta){
-				
-				if( respuesta === "1" ){
-					$('#loadingpw').html('');
-					$("#actualPw").val('');
-					$("#nuevoPw").val('');
-					$("#repitePw").val('');
-					swal({
-						title: "Éxito!",
-						text: 'Contraseña editada con éxito',
-						type: "success"
-					});
-				}else{
-					$('#loadingpw').html('');
-					swal({
-						title: "Error!",
-						text: respuesta,
-						type: "error"
-					});
-				}
-			}
+        $.ajax({
 
-		});
+            url: base_url + "cliente/passwordeditajax",
+            method: "POST",
+            data: dataString,
+            success: function(respuesta) {
 
-	});
-});//FIN DOCUMENT
+                if (respuesta === "1") {
+                    $('#loadingpw').html('');
+                    $("#actualPw").val('');
+                    $("#nuevoPw").val('');
+                    $("#repitePw").val('');
+                    swal({
+                        title: "Éxito!",
+                        text: 'Contraseña editada con éxito',
+                        type: "success"
+                    });
+                } else {
+                    $('#loadingpw').html('');
+                    swal({
+                        title: "Error!",
+                        text: respuesta,
+                        type: "error"
+                    });
+                }
+            }
+
+        });
+
+    });
+}); //FIN DOCUMENT
 
 /*=============================================
 VALIDAR IMAGEN LOGOTIPO
-=============================================*/	
-$(document).ready(function(){
+=============================================*/
+$(document).ready(function() {
 
-	$(".EditFotoLogoCliente").change(function(){
+    $(".EditFotoLogoCliente").change(function() {
 
-		var imagen = this.files[0];
+        var imagen = this.files[0];
 
-		/*=============================================
-		VALIDAMOS EL FORMATO DE LA IMAGEN SEA JPG O PNG
-		=============================================*/
+        /*=============================================
+        VALIDAMOS EL FORMATO DE LA IMAGEN SEA JPG O PNG
+        =============================================*/
 
-		if(imagen["type"] != "image/jpeg" && imagen["type"] != "image/png"){
+        if (imagen["type"] != "image/jpeg" && imagen["type"] != "image/png") {
 
-			$(".EditFotoLogoCliente").val("");
+            $(".EditFotoLogoCliente").val("");
 
-			 swal({
-				  title: "Error al subir la imagen",
-				  text: "¡La imagen debe estar en formato JPG o PNG!",
-				  type: "error",
-				  confirmButtonText: "¡Cerrar!"
-				});
+            swal({
+                title: "Error al subir la imagen",
+                text: "¡La imagen debe estar en formato JPG o PNG!",
+                type: "error",
+                confirmButtonText: "¡Cerrar!"
+            });
 
-		}else if( imagen["size"] > 512000 ){
+        } else if (imagen["size"] > 512000) {
 
-			$(".EditFotoLogoCliente").val("");
+            $(".EditFotoLogoCliente").val("");
 
-			 swal({
-				  title: "Error al subir la imagen",
-				  text: "¡La imagen no debe pesar más de 512KB!",
-				  type: "error",
-				  confirmButtonText: "¡Cerrar!"
-				});
+            swal({
+                title: "Error al subir la imagen",
+                text: "¡La imagen no debe pesar más de 512KB!",
+                type: "error",
+                confirmButtonText: "¡Cerrar!"
+            });
 
-		}else{
+        } else {
 
-			var datosImagen = new FileReader();
-			datosImagen.readAsDataURL(imagen);
+            var datosImagen = new FileReader();
+            datosImagen.readAsDataURL(imagen);
 
-			$(datosImagen).on("load", function(event){
+            $(datosImagen).on("load", function(event) {
 
-				var rutaImagen = event.target.result;
+                var rutaImagen = event.target.result;
 
-				$(".previsualizarLogoCliente").attr("src", rutaImagen);
+                $(".previsualizarLogoCliente").attr("src", rutaImagen);
 
-			});
+            });
 
-		}
-	});
+        }
+    });
 
-});//FIN DOCUMENT
+}); //FIN DOCUMENT
 
 /*=============================================
 GET MODAL CONTACTO
 =============================================*/
-$(document).ready(function(){
-	$(".btnContacto").on("click",function(){
-		
-		$(".modal-body").hide();		
-		$('#contactoloading').html('<img src="' + base_url + 'public/images/loading.gif" width="300">');
-		
-		var asunto	= $(this).attr("asunto");
-		$("#verAsuntoContacto").text(asunto);
-		$("#txtAsuntoContacto").val(asunto);
-		$("#txtMensajeContacto").val("");
-		
-		$('#contactoloading').html('');
-		$(".modal-body").show();		
+$(document).ready(function() {
+    $(".btnContacto").on("click", function() {
 
-	});
-});//FIN DOCUMENT
+        $(".modal-body").hide();
+        $('#contactoloading').html('<img src="' + base_url + 'public/images/loading.gif" width="300">');
+
+        var asunto = $(this).attr("asunto");
+        $("#verAsuntoContacto").text(asunto);
+        $("#txtAsuntoContacto").val(asunto);
+        $("#txtMensajeContacto").val("");
+
+        $('#contactoloading').html('');
+        $(".modal-body").show();
+
+    });
+}); //FIN DOCUMENT
 
 /*=============================================
 CONTACTO LOGIN
 =============================================*/
-$(document).ready(function(){
-	$("#mdlContacto").on("click", "#sendContacto", function(){
-		
-		$( "#loadingContacto" ).addClass( "fa-spin" );
-		var txtAsuntoContacto	= $("#txtAsuntoContacto").val();
-		var txtNombreContacto	= $("#txtNombreContacto").val();
-		var txtEmailContacto	= $("#txtEmailContacto").val();
-		var txtMensajeContacto	= $("#txtMensajeContacto").val();
-		
-		var dataString	= {asunto:txtAsuntoContacto, nombre:txtNombreContacto, email:txtEmailContacto, mensaje:txtMensajeContacto};
+$(document).ready(function() {
+    $("#mdlContacto").on("click", "#sendContacto", function() {
 
-		$.ajax({
+        $("#loadingContacto").addClass("fa-spin");
+        var txtAsuntoContacto = $("#txtAsuntoContacto").val();
+        var txtNombreContacto = $("#txtNombreContacto").val();
+        var txtEmailContacto = $("#txtEmailContacto").val();
+        var txtMensajeContacto = $("#txtMensajeContacto").val();
 
-			url: base_url + "contacto/formcliente",
-			method: "POST",
-			data: dataString,
-			success: function(respuesta){
-				if( respuesta === "" ){
-					$( "#loadingContacto" ).removeClass( "fa-spin" );
-					swal({
-						title: "Mensaje Enviado!",
-						text: "Pronto nos contactaremos contigo",
-						type: "success"
-					});
-					$('#mdlContacto').modal('hide');
-				}else{
-					$( "#loadingContacto" ).removeClass( "fa-spin" );
-					swal({
-						title: "Error!",
-						text: respuesta,
-						type: "error"
-					});
-				}
-			}
+        var dataString = { asunto: txtAsuntoContacto, nombre: txtNombreContacto, email: txtEmailContacto, mensaje: txtMensajeContacto };
 
-		});
-		return false; 
-	});
-});//FIN DOCUMENT
+        $.ajax({
+
+            url: base_url + "contacto/formcliente",
+            method: "POST",
+            data: dataString,
+            success: function(respuesta) {
+                if (respuesta === "") {
+                    $("#loadingContacto").removeClass("fa-spin");
+                    swal({
+                        title: "Mensaje Enviado!",
+                        text: "Pronto nos contactaremos contigo",
+                        type: "success"
+                    });
+                    $('#mdlContacto').modal('hide');
+                } else {
+                    $("#loadingContacto").removeClass("fa-spin");
+                    swal({
+                        title: "Error!",
+                        text: respuesta,
+                        type: "error"
+                    });
+                }
+            }
+
+        });
+        return false;
+    });
+}); //FIN DOCUMENT
 
 
 /*=============================================
@@ -167,21 +167,40 @@ EDITAR CLIENTE
 $(document).ready(function() {
     $("#btnEditarEmpresa").on("click", function() {
 
-        var idCliente			= $("#idEditCliente").val();
-        var txtEditDireccion	= $("#txtEditDireccion").val();
-        var txtEditFono			= $("#txtEditFono").val();
-        var txtEditUrl			= $("#txtEditUrl").val();
-        var txtEditFacebook		= $("#txtEditFacebook").val();
-        var txtEditInstagram	= $("#txtEditInstagram").val();
-        var txtEditDescripcion	= $("#txtEditDescripcion").val();
+        var idCliente = $("#idEditCliente").val();
+        var txtEditDireccion = $("#txtEditDireccion").val();
+        var txtEditFono = $("#txtEditFono").val();
+        var txtEditUrl = $("#txtEditUrl").val();
+        var txtEditFacebook = $("#txtEditFacebook").val();
+        var txtEditInstagram = $("#txtEditInstagram").val();
+        var txtEditDescripcion = $("#txtEditDescripcion").val();
+        //var tipoNegocio = $("input[name='editTipoNegocio[]']").map(function() { return $(this).val(); }).get();
+        // var tipoNegocio = $form.find("input[name='editTipoNegocio[]']").val()
+        var tipoNegocio = [];
+        $("input[name='editTipoNegocio[]']:checked").each(function() {
+            tipoNegocio.push(parseInt($(this).val()));
+        });
+
+        // var tipoNegocioObs = $("textarea[name='editTipoNegocioObs[]']").map(function() { return $(this).val(); }).get();
+        //var tipoNegocioObs = $("[textarea='editTipoNegocioObs[]']").val();
+        // var tipoNegocioObs = [];
+        // $('textarea[name="editTipoNegocioObs[]"]').each(function() {
+        //     tipoNegocioObs.push(this.value);
+        // });
+        // tipoNegocioObs = JSON.stringify(tipoNegocioObs);
+        // var tipoNegocioObs = $(this).find('textarea[name="editTipoNegocioObs"]').val();
+
+        var tipoNegocioObs = $("textarea[name='editTipoNegocioObs[]']").map(function() { return $(this).val(); }).get();
+        // alert(tipoNegocio);
+        // alert(JSON.stringify(tipoNegocioObs));
 
         var formData = new FormData();
         var files = $('#EditFotoLogoCliente')[0].files[0];
-		if( files !== undefined ){
-			formData.append('imagen', files);
-		}else{
-			formData.append('imagen', '');
-		}
+        if (files !== undefined) {
+            formData.append('imagen', files);
+        } else {
+            formData.append('imagen', '');
+        }
 
         formData.append('idCliente', idCliente);
         formData.append('txtEditDireccion', txtEditDireccion);
@@ -190,7 +209,9 @@ $(document).ready(function() {
         formData.append('txtEditFacebook', txtEditFacebook);
         formData.append('txtEditInstagram', txtEditInstagram);
         formData.append('txtEditDescripcion', txtEditDescripcion);
-		
+        formData.append('tipoNegocio', tipoNegocio);
+        formData.append('tipoNegocioObs', JSON.stringify(tipoNegocioObs));
+
         $.ajax({
             url: base_url + "cliente/updatecliente",
             method: "POST",
@@ -199,7 +220,7 @@ $(document).ready(function() {
             contentType: false,
             processData: false,
             success: function(res) {
-				
+
                 if (res.ok === '1') {
                     swal({
                         title: 'CLIENTE',
@@ -211,6 +232,7 @@ $(document).ready(function() {
                 } else if (res.ok === '2') {
                     swal("CLIENTE", "UN ERROR INESPERADO SE HA PRODUCIDO, FAVOR VOLVER A INTENTARLO.", "error");
                 } else {
+                    alert(res.ok);
                     swal("CLIENTE", "UN ERROR INESPERADO SE HA PRODUCIDO, FAVOR VOLVER A INTENTARLO.", "error");
                 }
             }

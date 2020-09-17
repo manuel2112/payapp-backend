@@ -155,37 +155,58 @@ $(document).ready(function() {
             dataType: "json",
             success: function(respuesta) {
                 $("#verIdEmpresa").text(respuesta.empresa.EMPRESA_ID);
-                $("#verCiudadEmpresa").text(respuesta.empresa.CIUDAD_NOMBRE);
-                $("#verNmbEmpresa").text(respuesta.empresa.EMPRESA_NOMBRE);
-                $("#verNmbEmpresa2").text(respuesta.empresa.EMPRESA_NOMBRE);
-                $("#verRazonSocial").text(respuesta.empresa.EMPRESA_RAZON);
-                $("#verRutEmpresa").text(respuesta.empresa.EMPRESA_RUT);
-                $("#verDireccionEmpresa").text(respuesta.empresa.EMPRESA_DIRECCION);
-                $("#verLatEmpresa").text(respuesta.empresa.EMPRESA_LAT);
-                $("#verLongEmpresa").text(respuesta.empresa.EMPRESA_LONG);
-                $("#verWebEmpresa").text(respuesta.empresa.EMPRESA_WEB);
-                $("#verFacebookEmpresa").text(respuesta.empresa.EMPRESA_FACEBOOK);
-                $("#verInstagramEmpresa").text(respuesta.empresa.EMPRESA_INSTAGRAM);
-                $("#verFonoEmpresa").text(respuesta.empresa.EMPRESA_FONO);
-                $("#verEmailEmpresa").text(respuesta.empresa.EMPRESA_EMAIL);
-                $("#verDescEmpresa").text(respuesta.empresa.EMPRESA_DESCRIPCION);
-                $("#verComercioEmpresa").text(respuesta.empresa.EMPRESA_COD_COMERCIO);
-                $("#verIngresoEmpresa").text(respuesta.empresa.EMPRESA_INGRESO);
+                let verCiudadEmpresa = respuesta.empresa.CIUDAD_NOMBRE ? respuesta.empresa.CIUDAD_NOMBRE : '';
+                $("#verCiudadEmpresa").text(verCiudadEmpresa);
+                let verNmbEmpresa = respuesta.empresa.EMPRESA_NOMBRE ? respuesta.empresa.EMPRESA_NOMBRE : '---';
+                $("#verNmbEmpresa").text(verNmbEmpresa);
+                let verNmbEmpresa2 = respuesta.empresa.EMPRESA_NOMBRE ? respuesta.empresa.EMPRESA_NOMBRE : '---';
+                $("#verNmbEmpresa2").text(verNmbEmpresa2);
+                let verRazonSocial = respuesta.empresa.EMPRESA_RAZON ? respuesta.empresa.EMPRESA_RAZON : '---';
+                $("#verRazonSocial").text(verRazonSocial);
+                let verRutEmpresa = respuesta.empresa.EMPRESA_RUT ? respuesta.empresa.EMPRESA_RUT : '---';
+                $("#verRutEmpresa").text(verRutEmpresa);
+                let verDireccionEmpresa = respuesta.empresa.EMPRESA_DIRECCION ? respuesta.empresa.EMPRESA_DIRECCION : '---';
+                $("#verDireccionEmpresa").text(verDireccionEmpresa);
+                let verLatEmpresa = respuesta.empresa.EMPRESA_LAT ? respuesta.empresa.EMPRESA_LAT : '---';
+                $("#verLatEmpresa").text(verLatEmpresa);
+                let verLongEmpresa = respuesta.empresa.EMPRESA_LONG ? respuesta.empresa.EMPRESA_LONG : '---';
+                $("#verLongEmpresa").text(verLongEmpresa);
+                let verWebEmpresa = respuesta.empresa.EMPRESA_WEB ? respuesta.empresa.EMPRESA_WEB : '---';
+                $("#verWebEmpresa").text(verWebEmpresa);
+                let verFacebookEmpresa = respuesta.empresa.EMPRESA_FACEBOOK ? respuesta.empresa.EMPRESA_FACEBOOK : '---';
+                $("#verFacebookEmpresa").text(verFacebookEmpresa);
+                let verInstagramEmpresa = respuesta.empresa.EMPRESA_INSTAGRAM ? respuesta.empresa.EMPRESA_INSTAGRAM : '---';
+                $("#verInstagramEmpresa").text(verInstagramEmpresa);
+                let verFonoEmpresa = respuesta.empresa.EMPRESA_FONO ? respuesta.empresa.EMPRESA_FONO : '---';
+                $("#verFonoEmpresa").text(verFonoEmpresa);
+                let verEmailEmpresa = respuesta.empresa.EMPRESA_EMAIL ? respuesta.empresa.EMPRESA_EMAIL : '---';
+                $("#verEmailEmpresa").text(verEmailEmpresa);
+                let verDescEmpresa = respuesta.empresa.EMPRESA_DESCRIPCION ? respuesta.empresa.EMPRESA_DESCRIPCION : '---';
+                $("#verDescEmpresa").text(verDescEmpresa);
+                let verComercioEmpresa = respuesta.empresa.EMPRESA_COD_COMERCIO ? respuesta.empresa.EMPRESA_COD_COMERCIO : '---';
+                $("#verComercioEmpresa").text(verComercioEmpresa);
+                let verIngresoEmpresa = respuesta.empresa.EMPRESA_INGRESO ? respuesta.empresa.EMPRESA_INGRESO : '---';
+                $("#verIngresoEmpresa").text(verIngresoEmpresa);
+
+                let txtNegocio = '';
+                let obsNegocio = '';
+                $.each(respuesta.tipoNegocio, function(index, value) {
+                    obsNegocio = value.EMPRESA_TIPO_NEGOCIO_OBS ? value.EMPRESA_TIPO_NEGOCIO_OBS : '---'
+                    txtNegocio += value.TIPO_NEGOCIO_NOMBRE + ": " + obsNegocio + "<br>";
+                });
+                $("#verTipoNegocio").html(txtNegocio);
 
                 if (respuesta.empresa.EMPRESA_LAT !== null && respuesta.empresa.EMPRESA_LONG !== null) {
                     $("#verUbicacionEmpresa").html('<a href="' + base_url + 'map/index/' + respuesta.empresa.EMPRESA_ID + '" class="btn btn-warning" target="_blank"><i class="fa fa-map-pin"></i></a>');
                 }
-
                 if (respuesta.empresa.EMPRESA_WEB !== null) {
                     $("#verWebUrlEmpresa").html('<a href="' + respuesta.empresa.EMPRESA_WEB + '" class="btn btn-warning" target="_blank"><i class="fa fa-link"></i></a>');
                 }
-
                 if (respuesta.empresa.EMPRESA_LOGOTIPO !== null) {
                     $(".previsualizarVerLogoEmpresa").attr("src", base_url + respuesta.empresa.EMPRESA_LOGOTIPO);
                 } else {
                     $(".previsualizarVerLogoEmpresa").attr("src", base_url + "public/images/food-defecto.png");
                 }
-
                 $('#verloading').html('');
                 $(".modal-body").show();
             }
@@ -210,11 +231,12 @@ $(document).ready(function() {
 
         $.ajax({
 
-            url: base_url + "empresa/geteditar",
+            url: base_url + "empresa/geteditarval",
             method: "POST",
             data: dataString,
             dataType: "json",
             success: function(respuesta) {
+                // alert(respuesta.tipoNegocio);
                 $("#idEditEmpresa").val(respuesta.empresa.EMPRESA_ID);
                 $("#cmbEditCiudad").val(respuesta.empresa.CIUDAD_ID);
                 $("#txtEditEmpresa").val(respuesta.empresa.EMPRESA_NOMBRE);
@@ -231,6 +253,27 @@ $(document).ready(function() {
                 $("#txtEditComercio").val(respuesta.empresa.EMPRESA_COD_COMERCIO);
                 $("#txtEditIngreso").val(respuesta.empresa.EMPRESA_INGRESO);
                 $("#txtEditDescripcion").val(respuesta.empresa.EMPRESA_DESCRIPCION);
+
+                let txtNegocio = '';
+                let obsNegocio = '';
+                $.each(respuesta.tipoNegocio, function(index, value) {
+                    txtNegocio += '<div class="form-check mb-3">';
+                    txtNegocio += '<label class="form-check-label">';
+                    txtNegocio += '<input type="checkbox"';
+                    txtNegocio += 'name="tipoNegocio[]"';
+                    txtNegocio += 'class="form-check-input"';
+                    txtNegocio += 'value="' + value.TIPO_NEGOCIO_ID + '"';
+                    txtNegocio += value.CHECKED + '>';
+                    txtNegocio += value.TIPO_NEGOCIO_NOMBRE;
+                    txtNegocio += '</label>';
+                    txtNegocio += '<textarea class="form-control" ';
+                    txtNegocio += 'rows="1" ';
+                    txtNegocio += 'name="tipoNegocioObs[' + (index + 1) + ']"';
+                    txtNegocio += 'placeholder="OBSERVACIÓN DE ' + value.TIPO_NEGOCIO_NOMBRE + '...">';
+                    txtNegocio += value.OBS + '</textarea>';
+                    txtNegocio += '</div>';
+                });
+                $("#verEditTipoNegocio").html(txtNegocio);
 
                 $("#fotoActualEmpresa").val(respuesta.empresa.EMPRESA_LOGOTIPO);
                 if (respuesta.empresa.EMPRESA_LOGOTIPO !== null) {
