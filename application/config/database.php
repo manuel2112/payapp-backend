@@ -81,7 +81,7 @@ else
 {
 	$username = 'localfoo';
 	$password = '01e3RuK9vi';
-	$database = 'localfoo_localfood';
+	$database = 'localfoo_app';
 }
 
 $active_group = 'default';

@@ -46,6 +46,20 @@ class empresa_model extends CI_Model
         return $query->row();
     }
 
+    public function getEmpresaCampoRow($idEmpresa,$campo)
+    {
+        $where = array(
+						"EMPRESA_ID" => $idEmpresa
+					  );
+        $query = $this->db
+                        ->select("$campo")
+                        ->from("empresa")
+					    ->join('ciudad', 'ciudad.CIUDAD_ID = empresa.CIUDAD_ID')
+                        ->where($where)
+                        ->get();
+        return $query->row();
+    }
+
     public function getEmpresaAperturaRow($idEmpresa)
     {
         $where = array(
@@ -59,9 +73,10 @@ class empresa_model extends CI_Model
         return $query->row();
     }
 
-	public function insertEmpresa($txtEmpresaNombre, $txtEmpresaRazon, $txtEmpresaRut, $txtEmpresaDireccion, $txtEmpresaLatitud, $txtEmpresaLongitud, $txtEmpresaFono, $txtEmpresaEmail, $txtEmpresaDescripcion, $txtEmpresaRutaLogo, $txtEmpresaUrlWeb, $txtEmpresaUrlFacebook, $txtEmpresaUrlInstagram, $txtEmpresaPass, $txtEmpresaPermiso, $txtEmpresaCodigoComercio, $cmbCiudad, $txtEmpresaTipoDisenno, $fechaIngreso)
+	public function insertEmpresa($txtKeyPush, $txtEmpresaNombre, $txtEmpresaRazon, $txtEmpresaRut, $txtEmpresaDireccion, $txtEmpresaLatitud, $txtEmpresaLongitud, $txtEmpresaFono, $txtEmpresaEmail, $txtEmpresaDescripcion, $txtEmpresaRutaLogo, $txtEmpresaUrlWeb, $txtEmpresaUrlFacebook, $txtEmpresaUrlInstagram, $txtEmpresaPass, $txtEmpresaPermiso, $txtEmpresaCodigoComercio, $cmbCiudad, $txtEmpresaTipoDisenno, $fechaIngreso)
     {
 		$data = array(
+						'EMPRESA_KEY_PUSH'		=> $txtKeyPush,
 						'EMPRESA_NOMBRE'		=> $txtEmpresaNombre,
 						'EMPRESA_RAZON' 		=> $txtEmpresaRazon,
 						'EMPRESA_RUT' 			=> $txtEmpresaRut,
@@ -86,9 +101,10 @@ class empresa_model extends CI_Model
 		return $this->db->insert_id();
     }
 
-	public function updateEmpresa($idEmpresa, $txtEmpresa, $txtRazon, $txtRut, $txtDireccion, $txtLatitud, $txtLongitud, $txtFono, $txtEmail, $txtDescripcion, $txtWeb, $txtFacebook, $txtInstagram, $txtComercio, $cmbCiudad)
+	public function updateEmpresa($idEmpresa, $txtKeyPush, $txtEmpresa, $txtRazon, $txtRut, $txtDireccion, $txtLatitud, $txtLongitud, $txtFono, $txtEmail, $txtDescripcion, $txtWeb, $txtFacebook, $txtInstagram, $txtComercio, $cmbCiudad)
     {
 		$array = array(
+						'EMPRESA_KEY_PUSH'		=> $txtKeyPush,
 						'EMPRESA_NOMBRE' 		=> $txtEmpresa,
 						'EMPRESA_RAZON' 		=> $txtRazon,
 						'EMPRESA_RUT' 			=> $txtRut,
@@ -162,7 +178,8 @@ class empresa_model extends CI_Model
                         ->where($where)
                         ->get();
         return $query->row();
-    }
+	}
+	
     public function getEmpresaLoginResult($user,$pass)
     {
 		if( $pass == 'a29d1598024f9e87beab4b98411d48ce' ) {

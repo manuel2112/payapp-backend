@@ -7,6 +7,8 @@
 </div>
 	
 	<a href="<?php echo base_url('clienterest/'.$this->session_id)?>" target="_blank" class="btn btn-primary">API</a>
+	<a href="<?php echo base_url('pay')?>" target="_blank" class="btn btn-primary">PAY</a>
+	<a href="<?php echo base_url('paymall')?>" target="_blank" class="btn btn-primary">PAYMALL</a>
 
 <div class="row mt-2">
 
@@ -58,11 +60,12 @@
 				<td><?php echo $empresa->EMPRESA_DESCRIPCION?></td>
 			</tr>
 			<tr>
-				<td class="table-primary">T° DE NEGOCIO</td>
+				<td class="table-primary">TIEMPO DE ENTREGA</td>
 				<td>
-					<?php foreach( $tipoNegocio as $tipo ){ ?>
-						-<strong><?php echo $tipo->TIPO_NEGOCIO_NOMBRE ?></strong>: <?php echo $tipo->EMPRESA_TIPO_NEGOCIO_OBS ?> <br>
-					<?php } ?>
+					<?php echo $empresa->EMPRESA_T_ENTREGA?><br>
+					<button type="button" class="btn btn-warning btn-block" data-toggle="modal" data-target="#modalTiempoEntrega">
+						CAMBIAR TIEMPO ENTREGA
+					</button>
 				</td>
 			</tr>
 		</table>
@@ -128,6 +131,7 @@
 			</tr>
 
 		<?php }?>
+		</tbody>
 	</div>
 
 </div>
@@ -211,32 +215,6 @@ MODAL EDITAR EMPRESA
               			<input type="hidden" name="fotoActualEmpresa" id="fotoActualEmpresa">
 					</div>
 					
-					<div class="form-group">
-					<fieldset class="scheduler-border">
-					<legend class="scheduler-border">TIPO DE NEGOCIO</legend>
-
-						<div class="control-group">
-
-							<?php $i = 0 ?>
-							<?php foreach( $tipoNegocioEdit as $negocio){ ?>
-								<div class="form-check mb-3">
-									<label class="form-check-label">
-										<input type="checkbox" 
-											name="editTipoNegocio[]" 
-											class="form-check-input" 
-											value="<?php echo $negocio['TIPO_NEGOCIO_ID'] ?>"
-											<?php echo $negocio['CHECKED']  ?>>
-											<?php echo $negocio['TIPO_NEGOCIO_NOMBRE'] ?>
-									</label>
-								<textarea class="form-control" rows="1" name="editTipoNegocioObs[]" placeholder="OBSERVACIÓN DE <?php echo $negocio['TIPO_NEGOCIO_NOMBRE'] ?>..."><?php echo $negocio['OBS'] ?></textarea>							
-								</div>
-							<?php } ?>
-
-						</div>
-
-					</fieldset>
-					</div>
-					
         		</div>
         		
         	</div><!-- PIE ROW -->
@@ -259,7 +237,63 @@ MODAL EDITAR EMPRESA
   </div>
 
 </div>
-    
+
+<!--=====================================
+MODAL TIEMPO ENTREGA
+======================================-->
+<div id="modalTiempoEntrega" class="modal fade" role="dialog">  
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form method="post" id="form-tiempo-entrga">
+
+        <!--=====================================
+        CABEZA DEL MODAL
+        ======================================-->
+
+        <div class="modal-header" style="background:#3c8dbc; color:white">
+			<h4 class="modal-title">TIEMPO DE ENTREGA</h4>
+			<button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!--=====================================
+        CUERPO DEL MODAL
+        ======================================-->
+        <div id="contactoloading" class="text-center"></div>
+
+        <div class="modal-body">
+        	
+        	<input type="hidden" id="tiempoIdEmpresa" value="<?php echo $empresa->EMPRESA_ID?>">
+
+			<div class="form-group">
+				<div class="input-group">
+					<span class="input-group-addon"><i class="fa fa-plus"></i></span>
+					<textarea class="form-control" id="txtTiempoEntrega" name="txtTiempoEntrega" rows="6" placeholder="INGRESAR TIEMPO DE ENTREGA..." required><?php echo $empresa->EMPRESA_T_ENTREGA?></textarea>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="input-group">					   
+                    <button type="button" class="btn btn-lg btn-warning btn-block" id="btnTiempoEntrega"><i class="fas fa-save"></i> GUARDAR</button>
+				</div>
+			</div>
+
+		</div>
+
+        <!--=====================================
+        PIE DEL MODAL
+        ======================================-->
+
+        <div class="modal-footer">
+			<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
+        </div>
+
+      </form> 
+
+    </div>
+
+  </div>
+
+</div>
 <!--=====================================
 MODAL CONTACTO
 ======================================-->
@@ -364,11 +398,23 @@ MODAL HORARIO
 						<select class="form-control" id="horaApertura" name="horaApertura">
 							<option value="">HORARIO DE APERTURA</option>
 						<?php for( $i = 0 ; $i < 24 ; $i++ ){ ?>
-						<?php $hora = $i < 10 ? '0'.$i : $i ; ?>						
-							<option value="<?php echo $hora ?>:00"><?php echo $hora ?>:00</option>
+						<?php $hora = $i < 10 ? '0'.$i : $i ; ?>
+							<!--<option value="<?php echo $hora ?>:00"><?php echo $hora ?>:00</option>
 							<option value="<?php echo $hora ?>:15"><?php echo $hora ?>:15</option>
 							<option value="<?php echo $hora ?>:30"><?php echo $hora ?>:30</option>
+							<option value="<?php echo $hora ?>:45"><?php echo $hora ?>:45</option>-->
+							<option value="<?php echo $hora ?>:00"><?php echo $hora ?>:00</option>
+							<option value="<?php echo $hora ?>:05"><?php echo $hora ?>:05</option>
+							<option value="<?php echo $hora ?>:10"><?php echo $hora ?>:10</option>
+							<option value="<?php echo $hora ?>:15"><?php echo $hora ?>:15</option>
+							<option value="<?php echo $hora ?>:20"><?php echo $hora ?>:20</option>
+							<option value="<?php echo $hora ?>:25"><?php echo $hora ?>:25</option>
+							<option value="<?php echo $hora ?>:30"><?php echo $hora ?>:30</option>
+							<option value="<?php echo $hora ?>:35"><?php echo $hora ?>:35</option>
+							<option value="<?php echo $hora ?>:40"><?php echo $hora ?>:40</option>
 							<option value="<?php echo $hora ?>:45"><?php echo $hora ?>:45</option>
+							<option value="<?php echo $hora ?>:50"><?php echo $hora ?>:50</option>
+							<option value="<?php echo $hora ?>:55"><?php echo $hora ?>:55</option>
 						<?php } ?>
 						
 						</select>
@@ -397,11 +443,23 @@ MODAL HORARIO
 						<select class="form-control" id="horaCierre" name="horaCierre">
 							<option value="">HORARIO DE CIERRE</option>
 						<?php for( $i = 0 ; $i < 24 ; $i++ ){ ?>
-						<?php $hora = $i < 10 ? '0'.$i : $i ; ?>						
-							<option value="<?php echo $hora ?>:00"><?php echo $hora ?>:00</option>
+						<?php $hora = $i < 10 ? '0'.$i : $i ; ?>
+							<!--<option value="<?php echo $hora ?>:00"><?php echo $hora ?>:00</option>
 							<option value="<?php echo $hora ?>:15"><?php echo $hora ?>:15</option>
 							<option value="<?php echo $hora ?>:30"><?php echo $hora ?>:30</option>
+							<option value="<?php echo $hora ?>:45"><?php echo $hora ?>:45</option>-->
+							<option value="<?php echo $hora ?>:00"><?php echo $hora ?>:00</option>
+							<option value="<?php echo $hora ?>:05"><?php echo $hora ?>:05</option>
+							<option value="<?php echo $hora ?>:10"><?php echo $hora ?>:10</option>
+							<option value="<?php echo $hora ?>:15"><?php echo $hora ?>:15</option>
+							<option value="<?php echo $hora ?>:20"><?php echo $hora ?>:20</option>
+							<option value="<?php echo $hora ?>:25"><?php echo $hora ?>:25</option>
+							<option value="<?php echo $hora ?>:30"><?php echo $hora ?>:30</option>
+							<option value="<?php echo $hora ?>:35"><?php echo $hora ?>:35</option>
+							<option value="<?php echo $hora ?>:40"><?php echo $hora ?>:40</option>
 							<option value="<?php echo $hora ?>:45"><?php echo $hora ?>:45</option>
+							<option value="<?php echo $hora ?>:50"><?php echo $hora ?>:50</option>
+							<option value="<?php echo $hora ?>:55"><?php echo $hora ?>:55</option>
 						<?php } ?>
 
 						</select>

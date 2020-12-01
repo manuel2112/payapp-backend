@@ -2,12 +2,12 @@
 MODAL MENUS EMPRESA
 =============================================*/
 $(document).ready(function() {
-	
-	$('#mdlOrderItems').on('hide.bs.modal', function () {
-		window.location = base_url + "productos";
-	});
+
+    $('#mdlOrderItems').on('hide.bs.modal', function() {
+        window.location = base_url + "productos";
+    });
+
     //ITEM MODAL
-	//OK
     $("#mdlOrderItemsOpen").click(function() {
         $("#mdlOrderItems").modal({ backdrop: "static" });
         var idEmpresa = $(this).attr("idempresa");
@@ -38,15 +38,15 @@ $(document).ready(function() {
 
     //ITEM PRODUCTO
     $(".mdlEditProductoOpen").click(function() {
-		var nmbProducto = $(this).attr("nmbProducto");
-		$("#ttlProducto").html('<h4 class="modal-title">' + nmbProducto + ' - ORDENAR PRODUCTOS</h4>');
+        var nmbProducto = $(this).attr("nmbProducto");
+        $("#ttlProducto").html('<h4 class="modal-title">' + nmbProducto + ' - ORDENAR PRODUCTOS</h4>');
     });
 
-	$('#mdlOrderVaVar').on('hide.bs.modal', function () {
-		window.location = base_url + "productos";
-	});
+    $('#mdlOrderVaVar').on('hide.bs.modal', function() {
+        window.location = base_url + "productos";
+    });
+
     //ITEM VALORES VARIABLES
-	//OK
     $(".mdlOrderVaVarOpen").click(function() {
         $("#mdlOrderVaVar").modal({ backdrop: "static" });
         var idProducto = $(this).attr("idproducto");
@@ -62,8 +62,7 @@ $(document).ready(function() {
                 tblVaVarOrder += '<table class="table table-striped" style="width:100%"><tr><th>ORDENAR</th><th>VALOR VARIABLE</th></tr><tbody class="row_vavar">';
                 var i = 1;
                 $.each(res.vavar, function(index, value) {
-					if ( value.PROVAR_BASE == '1' ){ nmbVaVar = 'BASE' }
-					else{ nmbVaVar = value.PROVAR_DESC }
+                    if (value.PROVAR_BASE == '1') { nmbVaVar = 'BASE' } else { nmbVaVar = value.PROVAR_DESC }
                     tblVaVarOrder += "<tr id=" + value.PROVAR_ID + "><td width='30%'><i class='fas fa-bars btn btn-secondary cursor'></i></td><td>" + nmbVaVar + "</td></tr>";
                 });
                 tblVaVarOrder += '</tbody></table>';
@@ -82,10 +81,10 @@ $(document).ready(function() {
     =============================================*/
 
     //GET ITEM MODAL
-	//OK
-	$('#mdlEditItems').on('hide.bs.modal', function () {
-		window.location = base_url + "productos";
-	});
+    $('#mdlEditItems').on('hide.bs.modal', function() {
+        window.location = base_url + "productos";
+    });
+
     $(".mdlEditItemsGetOpen").click(function() {
         $("#mdlEditItems").modal({ backdrop: "static" });
         var idItem = $(this).attr("iditem");
@@ -105,8 +104,8 @@ $(document).ready(function() {
             }
         });
     });
+
     //EDIT ITEM MODAL
-	//OK
     $("#btnEditarItem").click(function() {
         var idItem = $('#idEditItem').val();
         var idEmpresa = $('#idEditEmpresa').val();
@@ -129,7 +128,6 @@ $(document).ready(function() {
     });
 
     //GET PRODUCTO MODAL
-	//OK
     $(".mdlEditProductoOpen").click(function() {
         $("#mdlEditProducto").modal({ backdrop: "static" });
         var idProducto = $(this).attr("idproducto");
@@ -164,12 +162,11 @@ $(document).ready(function() {
             }
         });
     });
-	
+
     //EDIT PRODUCTO MODAL
-	//OK
     $("#btnEditarProducto").click(function() {
-        var idProducto 	= $('#idEditProducto').val();
-        var idItem 		= $('#idEditItemProducto').val();
+        var idProducto = $('#idEditProducto').val();
+        var idItem = $('#idEditItemProducto').val();
         var txtProducto = $('#txtEditProducto').val();
         var txtProductoDesc = $('#txtEditProductoDesc').val();
         var chkProductoOferta = null;
@@ -193,7 +190,7 @@ $(document).ready(function() {
         formData.append('chkProductoOferta', chkProductoOferta);
         formData.append('chkProductoDest', chkProductoDest);
         formData.append('imagen', files);
-		
+
         $.ajax({
             url: base_url + "productos/editproducto",
             method: "POST",
@@ -222,14 +219,13 @@ $(document).ready(function() {
         });
     });
 
-
     //VALIDAR INSERT VALOR VARIABLE
     $("#btnAddVaVar").attr("disabled", true);
     $("#txtAddProductoDescVar, #txtAddProductoValorVar ").keyup(function() {
 
-        var idProducto 		= $("#idAddProductoVaVar").val();
-        var txtProducto 	= $('#txtAddProductoDescVar').val();
-        var txtPrecioVaVar 	= $('#txtAddProductoValorVar').val();
+        var idProducto = $("#idAddProductoVaVar").val();
+        var txtProducto = $('#txtAddProductoDescVar').val();
+        var txtPrecioVaVar = $('#txtAddProductoValorVar').val();
 
         //VALIDAR ID PRODUCTO		
         var boolIdProducto = false;
@@ -242,26 +238,25 @@ $(document).ready(function() {
         if (txtPrecioVaVar !== "") { boolPrecioVaVar = true; }
 
         //COMPROBAR TODOS LOS CAMPOS
-        if ( boolIdProducto && boolNmbPro && boolPrecioVaVar ) {
+        if (boolIdProducto && boolNmbPro && boolPrecioVaVar) {
             $("#btnAddVaVar").attr("disabled", false);
         } else {
             $("#btnAddVaVar").attr("disabled", true);
         }
     });
-	
+
     //GET ADD VALOR VARIABLE MODAL
     $(".mdlAddVaVarOpen").click(function() {
         $("#mdlAddVaVar").modal({ backdrop: "static" });
-        var idproducto	= $(this).attr("idproducto");
-        var nmbProducto	= $(this).attr("nmbProducto");
+        var idproducto = $(this).attr("idproducto");
+        var nmbProducto = $(this).attr("nmbProducto");
 
         $("#idAddProductoVaVar").val(idproducto);
         $("#titleAddVaVarGet").html('<h4 class="modal-title">AGREGAR VALOR VARIABLE DEL PRODUCTO: ' + nmbProducto + '</h4>');
 
     });
-	
+
     //ADD VALOR VARIABLE MODAL
-	//OK
     $("#btnAddVaVar").click(function() {
         var idProducto = $('#idAddProductoVaVar').val();
         var txtProductoDescVar = $('#txtAddProductoDescVar').val();
@@ -291,8 +286,8 @@ $(document).ready(function() {
             }
         });
     });
+
     //GET EDIT VALOR VARIABLE MODAL
-	//OK
     $(".mdlEditVaVarOpen").click(function() {
         $("#mdlEditVaVar").modal({ backdrop: "static" });
         var idVaVar = $(this).attr("idvavar");
@@ -305,21 +300,18 @@ $(document).ready(function() {
             dataType: "json",
             success: function(res) {
 
-                var nmbVavar = res.vavar.PROVAR_BASE === '1' ? 'VALOR BASE' : res.vavar.PROVAR_DESC;
-
                 $("#idEditVaVar").val(res.vavar.PROVAR_ID);
                 $("#idEditProductoVaVar").val(res.vavar.PRODUCTO_ID);
-                $("#titleEditarVaVarGet").html('<h4 class="modal-title">EDITAR VALOR VARIABLE ' + nmbVavar + ', DEL PRODUCTO ' + nmbProducto + '</h4>');
-                $("#txtEditProductoDescVar").val(nmbVavar);
+                $("#titleEditarVaVarGet").html('<h4 class="modal-title">EDITAR VALOR VARIABLE ' + res.vavar.PROVAR_DESC + ', DEL PRODUCTO ' + nmbProducto + '</h4>');
+                $("#txtEditProductoDescVar").val(res.vavar.PROVAR_DESC);
                 $("#txtEditProductoValorVar").val(res.vavar.PROVAR_VALOR);
                 $("#txtEditProductoStockVar").val(res.vavar.PROVAR_STOCK);
 
             }
         });
     });
-	
+
     //EDIT VALOR VARIABLE MODAL
-	//OK
     $("#btnEditarVaVar").click(function() {
         var idProducto = $('#idEditProductoVaVar').val();
         var idVaVar = $('#idEditVaVar').val();
@@ -357,7 +349,7 @@ $(document).ready(function() {
     HIDDEN
     =============================================*/
 
-	//OK
+    //OK
     $(".hideItem").on("click", function() {
         var idItem = $(this).attr("iditem");
         var value = $(this).attr("hiddenitemvalue");
@@ -396,7 +388,7 @@ $(document).ready(function() {
 
     });
 
-	//OK
+    //OK
     $(".hiddenProducto").on("click", function() {
         var idProducto = $(this).attr("idproducto");
         var value = $(this).attr("hiddenproductovalue");
@@ -473,7 +465,7 @@ $(document).ready(function() {
 
     });
 
-	//ok
+    //ok
     $(".destacarProducto").on("click", function() {
         var idProducto = $(this).attr("idproducto");
         var value = $(this).attr("destacarproductovalue");
@@ -512,7 +504,7 @@ $(document).ready(function() {
 
     });
 
-	//OK
+    //OK
     $(".ofertaProducto").on("click", function() {
         var idProducto = $(this).attr("idproducto");
         var value = $(this).attr("ofertaproductovalue");
@@ -555,7 +547,7 @@ $(document).ready(function() {
     ELIMINAR
     =============================================*/
 
-	//OK
+    //OK
     $(".deleteVaVar").on("click", function() {
         var idVaVar = $(this).attr("idvavar");
 
@@ -589,7 +581,7 @@ $(document).ready(function() {
 
     });
 
-	//OK
+    //OK
     $(".deleteProducto").on("click", function() {
         var idProducto = $(this).attr("idproducto");
 
@@ -623,7 +615,7 @@ $(document).ready(function() {
 
     });
 
-	//OK
+    //OK
     $(".deleteItem").on("click", function() {
         var idItem = $(this).attr("iditem");
 
@@ -662,7 +654,7 @@ $(document).ready(function() {
     =============================================*/
 
     //VALIDAR BOTON GALERÍA
-	//OK
+    //OK
     $("#btnAddGaleriaProducto").attr("disabled", true);
     $("#file-es").change(function() {
 
@@ -690,13 +682,13 @@ $(document).ready(function() {
     });
 
     //GET GALERIA PRODUCTO
-	//OK
+    //OK
     $(".mdlAddGaleriaProductoOpen").click(function() {
         $("#mdlAddGaleriaProducto").modal({ backdrop: "static" });
-        var idProducto 	= $(this).attr("idproducto");
+        var idProducto = $(this).attr("idproducto");
         var nmbProducto = $(this).attr("nmbProducto");
-        var idEmpresa 	= $(this).attr("idEmpresa");
-        var tblGaleria 	= "";
+        var idEmpresa = $(this).attr("idEmpresa");
+        var tblGaleria = "";
 
         var dataString = { idProducto: idProducto };
         $.ajax({
@@ -722,7 +714,7 @@ $(document).ready(function() {
                 tblGaleria += '</tbody></table>';
                 $("#tblGaleria").html(tblGaleria);
                 $('<script>$( ".row_galeria" ).sortable({ delay: 150,stop: function() {var selectedData = new Array();$(".row_galeria>tr").each(function() {selectedData.push($(this).attr("id"));});updateOrder(selectedData); }});function updateOrder(data) { $.ajax({ url: base_url + "productos/ordergaleria",  type: "post",  data: {position:data},  success: function(res2){ console.log("OK"); } }); }</script>').appendTo(document.body);
-				
+
                 $('<script>$(".deleteImg").click(function() { var idimg = $(this).attr("idimg"); var dataString = { idimg: idimg }; $.ajax({ url: base_url + "productos/deletegaleriaimg", method: "POST",  data: dataString, dataType: "json", success: function(res3) { $("#"+res3.idImg).fadeTo(400, 0, function() { $("#"+res3.idImg).remove(); }); } }); });</script>').appendTo(document.body);
 
             }

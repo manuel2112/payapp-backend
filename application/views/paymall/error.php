@@ -1,0 +1,1 @@
+<h1>Hubo un problema al procesar su compra. <strong>NO</strong> se han realizado cargos a su tarjeta.</h1>

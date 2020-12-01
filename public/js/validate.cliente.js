@@ -160,7 +160,6 @@ $(document).ready(function() {
     });
 }); //FIN DOCUMENT
 
-
 /*=============================================
 EDITAR CLIENTE
 =============================================*/
@@ -174,25 +173,6 @@ $(document).ready(function() {
         var txtEditFacebook = $("#txtEditFacebook").val();
         var txtEditInstagram = $("#txtEditInstagram").val();
         var txtEditDescripcion = $("#txtEditDescripcion").val();
-        //var tipoNegocio = $("input[name='editTipoNegocio[]']").map(function() { return $(this).val(); }).get();
-        // var tipoNegocio = $form.find("input[name='editTipoNegocio[]']").val()
-        var tipoNegocio = [];
-        $("input[name='editTipoNegocio[]']:checked").each(function() {
-            tipoNegocio.push(parseInt($(this).val()));
-        });
-
-        // var tipoNegocioObs = $("textarea[name='editTipoNegocioObs[]']").map(function() { return $(this).val(); }).get();
-        //var tipoNegocioObs = $("[textarea='editTipoNegocioObs[]']").val();
-        // var tipoNegocioObs = [];
-        // $('textarea[name="editTipoNegocioObs[]"]').each(function() {
-        //     tipoNegocioObs.push(this.value);
-        // });
-        // tipoNegocioObs = JSON.stringify(tipoNegocioObs);
-        // var tipoNegocioObs = $(this).find('textarea[name="editTipoNegocioObs"]').val();
-
-        var tipoNegocioObs = $("textarea[name='editTipoNegocioObs[]']").map(function() { return $(this).val(); }).get();
-        // alert(tipoNegocio);
-        // alert(JSON.stringify(tipoNegocioObs));
 
         var formData = new FormData();
         var files = $('#EditFotoLogoCliente')[0].files[0];
@@ -209,8 +189,6 @@ $(document).ready(function() {
         formData.append('txtEditFacebook', txtEditFacebook);
         formData.append('txtEditInstagram', txtEditInstagram);
         formData.append('txtEditDescripcion', txtEditDescripcion);
-        formData.append('tipoNegocio', tipoNegocio);
-        formData.append('tipoNegocioObs', JSON.stringify(tipoNegocioObs));
 
         $.ajax({
             url: base_url + "cliente/updatecliente",
@@ -224,6 +202,47 @@ $(document).ready(function() {
                 if (res.ok === '1') {
                     swal({
                         title: 'CLIENTE',
+                        text: 'DATOS ACTUALIZADOS EXITOSAMENTE',
+                        type: "success"
+                    }, function() {
+                        window.location = base_url + "cliente";
+                    });
+                } else if (res.ok === '2') {
+                    swal("CLIENTE", "UN ERROR INESPERADO SE HA PRODUCIDO, FAVOR VOLVER A INTENTARLO.", "error");
+                } else {
+                    alert(res.ok);
+                    swal("CLIENTE", "UN ERROR INESPERADO SE HA PRODUCIDO, FAVOR VOLVER A INTENTARLO.", "error");
+                }
+            }
+        });
+    });
+}); //FIN DOCUMENT
+
+/*=============================================
+EDITAR TIEMPOO ENTREGA
+=============================================*/
+$(document).ready(function() {
+    $("#btnTiempoEntrega").on("click", function() {
+
+        var idCliente = $("#tiempoIdEmpresa").val();
+        var txtTiempoEntrega = $("#txtTiempoEntrega").val();
+
+        var formData = new FormData();
+        formData.append('idCliente', idCliente);
+        formData.append('txtTiempoEntrega', txtTiempoEntrega);
+
+        $.ajax({
+            url: base_url + "cliente/updatetiempoentrega",
+            method: "POST",
+            data: formData,
+            dataType: "json",
+            contentType: false,
+            processData: false,
+            success: function(res) {
+
+                if (res.ok === '1') {
+                    swal({
+                        title: 'TIEMPO DE ENTREGA',
                         text: 'DATOS ACTUALIZADOS EXITOSAMENTE',
                         type: "success"
                     }, function() {

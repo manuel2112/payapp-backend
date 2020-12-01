@@ -1,3 +1,4 @@
+<?php $v = time();?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -14,7 +15,7 @@
     <link rel="stylesheet" href="<?php echo base_url('public/css/dataTables.bootstrap4.min.css')?>">
     <link rel="stylesheet" href="<?php echo base_url('public/sweetalert/sweetalert.css')?>">
     <link rel="stylesheet" href="<?php echo base_url('public/datetimepicker/bootstrap-datetimepicker.min.css')?>">
-    <link rel="stylesheet" href="<?php echo base_url('public/css/style.css')?>">
+    <link rel="stylesheet" href="<?php echo base_url('public/css/style.css?v='.$v)?>">
     <link rel="stylesheet" href="<?php echo base_url('public/css/responsive.css')?>">
 	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
@@ -41,6 +42,7 @@
 						<a href="<?php echo base_url()?>empresa" title="EMPRESA" class="<?php echo $this->uri->segment(1) == 'empresa' ? 'active' : '' ;?>"><i class="fas fa-users"></i> <span>EMPRESA</span></a>
 						<a href="<?php echo base_url()?>productos" title="PRODUCTOS" class="<?php echo $this->uri->segment(1) == 'productos' ? 'active' : '' ;?>"><i class="fas fa-cookie-bite"></i><span>MENU</span></a>
 						<a href="<?php echo base_url()?>horario" title="HORARIO" class="<?php echo $this->uri->segment(1) == 'horario' ? 'active' : '' ;?>"><i class="far fa-clock"></i><span>HORARIO</span></a>
+						<a href="<?php echo base_url()?>color" title="COLOR" class="<?php echo $this->uri->segment(1) == 'color' ? 'active' : '' ;?>"><i class="fas fa-palette"></i><span>COLOR</span></a>
 <!--
 						<a href="<?php echo base_url()?>destacados" title="DESTACADOS" class="<?php echo $this->uri->segment(1) == 'destacados' ? 'active' : '' ;?>"><i class="fa fa-users"></i> <span>Destacados</span></a>
                 		<a href="<?php echo base_url()?>notificacion" title="NOTIFICACIÓN" class="<?php echo $this->uri->segment(1) == 'notificacion' ? 'active' : '' ;?>"><i class="fa fa-bell"></i> <span>Notificación</span></a>
@@ -58,7 +60,13 @@
                 	
                 		<a href="<?php echo base_url()?>cliente" title="INICIO" class="<?php echo $this->uri->segment(1) == 'cliente' ? 'active' : '' ;?>"><i class="fa fa-home"></i> <span>INICIO</span></a>
 
-						<a href="<?php echo base_url()?>productos" title="PRODUCTOS" class="<?php echo $this->uri->segment(1) == 'productos' ? 'active' : '' ;?>"><i class="fas fa-cookie-bite"></i><span>MENU</span></a>
+						<a href="<?php echo base_url()?>productos" title="PRODUCTOS" class="<?php echo $this->uri->segment(1) == 'productos' ? 'active' : '' ;?>"><i class="fas fa-bars"></i><span>MENU</span></a>
+						
+						<a href="<?php echo base_url()?>tiponegocio" title="TIPO DE NEGOCIO" class="<?php echo $this->uri->segment(1) == 'tiponegocio' ? 'active' : '' ;?>"><i class="fas fa-business-time"></i><span>TIPO DE NEGOCIO</span></a>
+
+						<a href="<?php echo base_url()?>push" title="PUSH NOTIFICATIONS" class="<?php echo $this->uri->segment(1) == 'push' ? 'active' : '' ;?>"><i class="fas fa-exclamation"></i><span>PUSH</span></a>
+
+						<a href="<?php echo base_url()?>paleta" title="COLORES" class="<?php echo $this->uri->segment(1) == 'paleta' ? 'active' : '' ;?>"><i class="fas fa-palette"></i><span>COLORES</span></a>
                 		
                 		<!-- <?php if( $idPlan == 2 || $idPlan == 3 || $idPlan == 4 || $idPlan == 5 ){?>
                 		<a href="<?php echo base_url()?>cliente/imagenesperfil" title="IMÁGENES DE PERFIL" class="<?php echo $this->uri->segment(2) == 'imagenesperfil' ? 'active' : '' ;?>"><i class="fa fa-picture-o"></i> <span>Imágenes de Perfil</span></a>
@@ -124,7 +132,6 @@
 <script src="<?php echo base_url('public/js/fecha.js')?>"></script>
 
 <!--SESION ADMINISTRADOR-->
-<?php $v = time();?>
 
 <?php if( $this->session->userdata('adminapppay') ){?>
 <!--	<script src="<?php echo base_url('public/js/validate.tipo.negocio.js')?>"></script>-->
@@ -146,15 +153,20 @@
 <script src="<?php echo base_url('public/js/validate.items.js?v='.$v)?>"></script>
 <script src="<?php echo base_url('public/js/validate.menu.ajax.js?v='.$v)?>"></script>
 <script src="<?php echo base_url('public/js/validate.producto.js?v='.$v)?>"></script>
-<script src="<?php echo base_url('public/js/validate.files.js')?>"></script>
-<script src="<?php echo base_url('public/js/function.date.js')?>"></script>
-<script src="<?php echo base_url('public/js/validate.graph.js')?>"></script>
-<script src="<?php echo base_url('public/js/function.popup.js')?>"></script>
-<script src="<?php echo base_url('public/js/funciones.js')?>"></script>
-<script src="<?php echo base_url('public/js/validate.horario.js?v='.$v)?>"></script>
+<script src="<?php echo base_url('public/js/validate.files.js?v='.$v)?>"></script>
+<script src="<?php echo base_url('public/js/function.date.js?v='.$v)?>"></script>
+<script src="<?php echo base_url('public/js/validate.graph.js?v='.$v)?>"></script>
+<script src="<?php echo base_url('public/js/function.popup.js?v='.$v)?>"></script>
+<script src="<?php echo base_url('public/js/funciones.js?v='.$v)?>"></script>
+<script src="<?php echo base_url('public/js/validate.push.js?v='.$v)?>"></script>
+<script src="<?php echo base_url('public/js/validate.color.js?v='.$v)?>"></script>
+<script src="<?php echo base_url('public/js/validate.paleta.js?v='.$v)?>"></script>
+<script src="<?php echo base_url('public/js/validate.tipo.negocio.js?v='.$v)?>"></script>
+<script src="<?php echo base_url('public/js/validate.delivery.js?v='.$v)?>"></script>
+<script src="<?php echo base_url('public/js/validate.horario.js?v='.$v)?>"></script> <!--REVISAR-->
 <script src="<?php echo base_url('public/js/validate.horario.ajax.js?v='.$v)?>"></script>
 <script src="<?php echo base_url('public/js/validate.menu.js?v='.$v)?>"></script>
-<script src="<?php echo base_url('public/js/validate.cliente.js')?>"></script>
+<script src="<?php echo base_url('public/js/validate.cliente.js?v='.$v)?>"></script>
 	
 </body>
 </html>

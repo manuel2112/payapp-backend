@@ -58,12 +58,13 @@ VALIDAR DATOS ENTRADA EMPRESA
 $(document).ready(function() {
 
     $("#btnGuardarEmpresa").attr("disabled", true);
-    $("#cmbCiudad, #txtEmpresaNombre, #txtEmpresaFono, #txtEmpresaDescripcion ").change(function() {
+    $("#cmbCiudad, #txtEmpresaNombre, #txtEmpresaFono, #txtEmpresaDescripcion, #txtKeyPush ").change(function() {
 
         var cmbCiudad = $("#cmbCiudad").val();
         var txtEmpresa = $("#txtEmpresaNombre").val();
         var txtFono = $("#txtEmpresaFono").val();
         var txtDescripcion = $("#txtEmpresaDescripcion").val();
+        var txtKeyPush = $("#txtKeyPush").val();
 
         //VALIDAR CIUDAD		
         var boolCiudad = false;
@@ -77,9 +78,12 @@ $(document).ready(function() {
         //VALIDAR EMPRESA		
         var boolDescripcion = false;
         if (txtDescripcion !== "") { boolDescripcion = true; }
+        //VALIDAR KEY PUSH		
+        var boolKeyPush = false;
+        if (txtKeyPush !== "") { boolKeyPush = true; }
 
         //COMPROBAR TODOS LOS CAMPOS
-        if (boolCiudad && boolEmpresa && boolFono && boolDescripcion) {
+        if (boolCiudad && boolEmpresa && boolFono && boolDescripcion && boolKeyPush) {
             $("#btnGuardarEmpresa").attr("disabled", false);
         } else {
             $("#btnGuardarEmpresa").attr("disabled", true);
@@ -239,6 +243,7 @@ $(document).ready(function() {
                 // alert(respuesta.tipoNegocio);
                 $("#idEditEmpresa").val(respuesta.empresa.EMPRESA_ID);
                 $("#cmbEditCiudad").val(respuesta.empresa.CIUDAD_ID);
+                $("#txtEditKeyPush").val(respuesta.empresa.EMPRESA_KEY_PUSH);
                 $("#txtEditEmpresa").val(respuesta.empresa.EMPRESA_NOMBRE);
                 $("#txtEditRazon").val(respuesta.empresa.EMPRESA_RAZON);
                 $("#txtEditRut").val(respuesta.empresa.EMPRESA_RUT);

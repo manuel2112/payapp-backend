@@ -151,6 +151,25 @@ class producto_model extends CI_Model
 		  $this->db->where('PRODUCTO_ID', $idProducto);
 		  $this->db->update('producto', $array);
 	}
+
+	public function getProductoPorEmpresa($idEmpresa)
+	{
+		  $where = array(
+						  "producto.PRODUCTO_SHOW" 				=> true,
+						  "producto.PRODUCTO_FLAG" 				=> true,
+						  "tipo_producto.EMPRESA_ID" 			=> $idEmpresa,
+						  "tipo_producto.TIPO_PRODUCTO_SHOW" 	=> true,
+						  "tipo_producto.TIPO_PRODUCTO_FLAG" 	=> true,
+						);
+		  $query = $this->db
+						  ->select("*")
+						  ->from("producto")
+						  ->join('tipo_producto', 'tipo_producto.TIPO_PRODUCTO_ID = producto.TIPO_PRODUCTO_ID')
+						  ->where($where)
+						  ->order_by("producto.PRODUCTO_NOMBRE ASC")
+						  ->get();
+		  return $query->result();  
+	}
 	
 	/********************************/
 	/***********API******************/

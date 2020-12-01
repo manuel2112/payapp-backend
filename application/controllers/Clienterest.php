@@ -21,11 +21,10 @@ class ClienteRest extends REST_Controller {
 	{
 		$arreglo = array();
 		updateHorario($idEmpresa);
-		$arreglo['empresa']	= $this->empresa_model->getEmpresaRow($idEmpresa);
-		$valor	= $this->horario_model->getHorarioHasta($idEmpresa);
+		$arreglo['empresa']		= $this->empresa_model->getEmpresaRow($idEmpresa);
+		$valor					= $this->horario_model->getHorarioHasta($idEmpresa);
 		$arreglo['hora']		= is_null ( $valor ) ? '' : $valor ;
 		$arreglo['segundos']	= horarioPorEmpresaSingle($idEmpresa);
-		$arreglo['tipoNegocio']	= $this->empresa_negocio_model->getEmpresaNegocioActive($idEmpresa);
 
 		if( count($arreglo) == 0 ){
 			$respuesta = array(

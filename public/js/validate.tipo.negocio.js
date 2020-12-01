@@ -1,120 +1,54 @@
 /*=============================================
-GUARDAR TIPO DE NEGOCIO
+TIPO DE NEGOCIO
 =============================================*/
-$(function(){
-	
-	$("#guardarTipoNegocio").on("click",function()
-	{
-		var tipoNegocio = $.trim($('#nuevoTipoNegocio').val());
-		var dataString	= {tipoNegocio:tipoNegocio};
-		
-		$.ajax({
+$(document).ready(function() {
 
-		  url: base_url + "tiponegocio/insert",
-		  method: "POST",
-		  data: dataString,
-		  success:function(respuesta){
-			$("#respuesta").html(respuesta).show();
-		  }
+    //ENVIAR PUSH TEST
+    $("#tipo-negocio").on("click", ".btn-delivery, .btn-restaurante, .btn-retiro", function() {
 
-		});
+        var idTipo = $(this).val();
+        var descripcion = '';
 
-	});
+        if (idTipo == 1) {
+            descripcion = $('#txt-delivery').val();
+        } else if (idTipo == 2) {
+            descripcion = $('#txt-restaurante').val();
+        } else if (idTipo == 3) {
+            descripcion = $('#txt-retiro').val();
+        } else {}
 
-});
+        var dataString = { idTipo: idTipo, descripcion: descripcion };
 
-/*=============================================
-ACTIVAR TIPO NEGOCIO
-=============================================*/
-$(document).ready(function(){
-    $("#tiponegocio").on("click", ".btnactivartiponegocio", function(){
-		var idtiponegocio 	= $(this).attr("idtiponegocio");
-		var estado 			= $(this).attr("estado");
-		
-		var dataString	= {idtiponegocio:idtiponegocio,estado:estado};
+        $.ajax({
 
-		$.ajax({
+            url: base_url + "tiponegocio/insert",
+            method: "POST",
+            data: dataString,
+            dataType: "json",
+            success: function(res) {
 
-		  url: base_url + "tiponegocio/estado",
-		  method: "POST",
-		  data: dataString,
-		  success: function(respuesta){
+                if (res.ok === '1') {
+                    swal({
+                            title: 'TIPO DE NEGOCIO',
+                            text: res.msn,
+                            type: "success"
+                        },
+                        function(isConfirm) {
+                            if (isConfirm) {
+                                location.reload();
+                            }
+                        });
+                } else {
+                    swal({
+                        title: 'TIPO DE NEGOCIO',
+                        text: 'SE HA PRODUCIDO UN ERROR, VOLVER A INTENTARLO',
+                        type: "error"
+                    });
+                }
+            }
 
-					 swal({
-					  title: "El Tipo de Negocio ha sido actualizado",
-					  type: "success",
-					  confirmButtonText: "¡Cerrar!"
-					}).then(function(result) {
-						if (result.value) {
-							window.location = "tiponegocio";
-						}
-					});
-			}
-		});
+        });
 
-		if( estado === "0" ){
-			$(this).removeClass('btn-success');
-			$(this).addClass('btn-danger');
-			$(this).html('Desactivado');
-			$(this).attr('estado',1);
-		}else{
-			$(this).removeClass('btn-danger');
-			$(this).addClass('btn-success');
-			$(this).html('Activado');
-			$(this).attr('estado',0);
-		}
     });
-});
 
-/*=============================================
-GET EDITAR TIPO NEGOCIO
-=============================================*/
-$(document).ready(function(){
-    $("#tiponegocio").on("click", ".btnGetEditarTipoNegocio", function(){
-		
-		$('#loading').html('<img src="' + base_url + 'public/images/loading.gif" width="30">');
-		$("#editarTipoNegocio").val("");
-		$("#respuestaeditar").html("").show();
-		
-		var idtiponegocio = $(this).attr("idtiponegocio");
-		
-		var dataString	= {idtiponegocio:idtiponegocio};
-
-		$.ajax({
-
-			url: base_url + "tiponegocio/geteditar",
-			method: "POST",
-			data: dataString,
-			dataType: "json",
-			success: function(respuesta){
-				$("#editarIdTipoNegocio").val(respuesta["TIPO_NEGOCIO_ID"]);
-				$("#editarTipoNegocio").val(respuesta["TIPO_NEGOCIO_NOMBRE"]);
-				$('#loading').html('');
-			}
-		});		
-    });	
-});
-
-/*=============================================
-EDITAR TIPO NEGOCIO
-=============================================*/
-$(function(){
-	
-	$("#btnEditarTipoNegocio").on("click",function()
-	{		
-		var idtiponegocio 	= $.trim($('#editarIdTipoNegocio').val());
-		var txtTipoNegocio 	= $.trim($('#editarTipoNegocio').val());
-		
-		var dataString	= {idtiponegocio:idtiponegocio,txtTipoNegocio:txtTipoNegocio};
-
-		$.ajax({
-
-			url: base_url + "tiponegocio/editar",
-			method: "POST",
-			data: dataString,
-			success: function(respuesta){
-				$("#respuestaeditar").html(respuesta).show();
-			}
-		});		
-    });	
-});
+}); //FIN DOCUMENT

@@ -17,7 +17,7 @@ $(document).ready(function() {
 
     //RESET MODAL AL CERRAR
     $('#mdlOrderProductos').on('hide.bs.modal', function(event) {
-		window.location = base_url + "productos";
+        window.location = base_url + "productos";
     }); //FIN #mdlProducto
 
     //RESET MODAL AL ABRIR
@@ -25,7 +25,7 @@ $(document).ready(function() {
         $('#formAddProducto').trigger("reset");
         $("#datosProducto").show();
         $('#addValorVariable').html('');
-		var item = $("#mdlProductoOpen").attr("iditem");
+        var item = $("#mdlProductoOpen").attr("iditem");
     }); //FIN #mdlProducto
 
 }); //FIN DOCUMENT
@@ -33,18 +33,17 @@ $(document).ready(function() {
 /*=============================================
 GET TIPO PRODUCTO POR EMPRESA
 =============================================*/
-
 $(document).ready(function() {
 
     //RESET MODAL AL ABRIR
     $('.mdlProducto').on('click', function(event) {
         var nmbProducto = $(this).attr("nmbProducto");
         var IdProducto = $(this).attr("iditem");
-		$("#ttlProducto").html('<h4 class="modal-title">AGREGAR PRODUCTO - ' + nmbProducto + '</h4>');
-		$("#idTipoProducto").val(IdProducto);
+        $("#ttlProducto").html('<h4 class="modal-title">AGREGAR PRODUCTO - ' + nmbProducto + '</h4>');
+        $("#idTipoProducto").val(IdProducto);
     }); //FIN #mdlProducto
 
-	//OK
+    //OK
     $(".mdlOrderProductosOpen").click(function() {
         $("#mdlOrderProductos").modal({ backdrop: "static" });
 
@@ -57,9 +56,9 @@ $(document).ready(function() {
             data: dataString,
             dataType: "json",
             success: function(res) {
-				
-				$("#titleOrdenarProductos").html('<h4 class="modal-title">ORDENAR PRODUCTOS POR ITEM: '+ res.item.TIPO_PRODUCTO_NOMBRE +'</h4>');
-				
+
+                $("#titleOrdenarProductos").html('<h4 class="modal-title">ORDENAR PRODUCTOS POR ITEM: ' + res.item.TIPO_PRODUCTO_NOMBRE + '</h4>');
+
                 tblProductosOrder += '<table class="table table-striped" style="width:100%"><tr><th>ORDENAR</th><th>PRODUCTO</th></tr><tbody class="row_productos">';
                 var i = 1;
                 $.each(res.productos, function(index, value) {
@@ -74,7 +73,7 @@ $(document).ready(function() {
         });
 
     });
-	
+
     $("#mdlProducto").on("change", "#idEmpresaProducto", function() {
 
         var idEmpresa = $(this).val();
@@ -92,18 +91,18 @@ $(document).ready(function() {
             data: dataString,
             dataType: "json",
             success: function(res) {
-				
+
                 $.each(res.items, function(index, value) {
                     $("#idTipoProducto").append('<option value=' + value.TIPO_PRODUCTO_ID + ' class="clickItem">' + value.TIPO_PRODUCTO_NOMBRE + '</option>');
                 });
-				}
-			});
-		});
+            }
+        });
+    });
 
-		$("#mdlProducto").on("click", ".clickItem", function() {
-			var idItem = $(this).val();
-			$("#datosProducto").show("slow");
-		});
+    $("#mdlProducto").on("click", ".clickItem", function() {
+        var idItem = $(this).val();
+        $("#datosProducto").show("slow");
+    });
 });
 
 /*=============================================
@@ -113,27 +112,25 @@ $(document).ready(function() {
 
     $("#btnGuardarProducto").attr("disabled", true);
     $("#btnGuardarProductoVaVar").attr("disabled", true);
-    $("#idEmpresaProducto, #idTipoProducto, #txtAddProducto, #txtAddProductoValor ").keyup(function() {
+    $("#idEmpresaProducto, #idTipoProducto, #txtAddProducto, #txtAddProductoNmb, #txtAddProductoValor ").keyup(function() {
 
         var idEmpresaProducto = $("#idEmpresaProducto").val();
         var idTipoProducto = $("#idTipoProducto").val();
         var txtAddProducto = $("#txtAddProducto").val();
+        var txtAddProductoNmb = $("#txtAddProductoNmb").val();
         var txtAddProductoValor = $("#txtAddProductoValor").val();
 
-        //VALIDAR CIUDAD		
         var boolIdEmpresaProducto = false;
         if (idEmpresaProducto !== "") { boolIdEmpresaProducto = true; }
-        //VALIDAR CIUDAD		
         var boolIdTipoProducto = false;
         if (idTipoProducto !== "") { boolIdTipoProducto = true; }
-        //VALIDAR CIUDAD		
         var boolTxtAddProducto = false;
         if (txtAddProducto !== "") { boolTxtAddProducto = true; }
-        //VALIDAR CIUDAD		
+        var booltxtAddProductoNmb = false;
+        if (txtAddProductoNmb !== "") { booltxtAddProductoNmb = true; }
         var boolTxtAddProductoValor = false;
         if (txtAddProductoValor !== "") { boolTxtAddProductoValor = true; }
 
-        //COMPROBAR TODOS LOS CAMPOS
         if (boolIdEmpresaProducto && boolIdTipoProducto && boolTxtAddProducto && boolTxtAddProductoValor) {
             $("#btnGuardarProducto").attr("disabled", false);
             $("#btnGuardarProductoVaVar").attr("disabled", false);
@@ -149,21 +146,21 @@ $(document).ready(function() {
 /*=============================================
 INSERT PRODUCTO
 =============================================*/
-//OK
 $(document).ready(function() {
     $("#btnGuardarProducto").on("click", function() {
 
-        var idEmpresaProducto 		= $("#idEmpresaProducto").val();
-        var idTipoProducto 			= $("#idTipoProducto").val();
-        var txtAddProducto 			= $("#txtAddProducto").val();
-        var txtAddProductoValor 	= $("#txtAddProductoValor").val();
-        var txtAddProductoStock 	= $("#txtAddProductoStock").val();
-        var txtAddProductoDesc 		= $("#txtAddProductoDesc").val();
-        var chkProductoOferta 		= null;
-        var chkProductoDest 		= null;
-        var txtAddProductoDescVar 	= $('input[name="txtAddProductoDescVar[]"]').map(function() { return $(this).val(); }).get();
-        var txtAddProductoValorVar 	= $('input[name="txtAddProductoValorVar[]"]').map(function() { return $(this).val(); }).get();
-        var txtAddProductoStockVar 	= $('input[name="txtAddProductoStockVar[]"]').map(function() { return $(this).val(); }).get();
+        var idEmpresaProducto = $("#idEmpresaProducto").val();
+        var idTipoProducto = $("#idTipoProducto").val();
+        var txtAddProducto = $("#txtAddProducto").val();
+        var txtAddProductoDesc = $("#txtAddProductoDesc").val();
+        var txtAddProductoNmb = $("#txtAddProductoNmb").val();
+        var txtAddProductoValor = $("#txtAddProductoValor").val();
+        var txtAddProductoStock = $("#txtAddProductoStock").val();
+        var chkProductoOferta = null;
+        var chkProductoDest = null;
+        var txtAddProductoDescVar = $('input[name="txtAddProductoDescVar[]"]').map(function() { return $(this).val(); }).get();
+        var txtAddProductoValorVar = $('input[name="txtAddProductoValorVar[]"]').map(function() { return $(this).val(); }).get();
+        var txtAddProductoStockVar = $('input[name="txtAddProductoStockVar[]"]').map(function() { return $(this).val(); }).get();
 
         if ($("#chkProductoOferta").is(':checked')) {
             chkProductoOferta = $("#chkProductoOferta").val();
@@ -178,16 +175,17 @@ $(document).ready(function() {
         formData.append('idEmpresaProducto', idEmpresaProducto);
         formData.append('idTipoProducto', idTipoProducto);
         formData.append('txtAddProducto', txtAddProducto);
+        formData.append('txtAddProductoDesc', txtAddProductoDesc);
+        formData.append('txtAddProductoNmb', txtAddProductoNmb);
         formData.append('txtAddProductoValor', txtAddProductoValor);
         formData.append('txtAddProductoStock', txtAddProductoStock);
-        formData.append('txtAddProductoDesc', txtAddProductoDesc);
         formData.append('chkProductoOferta', chkProductoOferta);
         formData.append('chkProductoDest', chkProductoDest);
         formData.append('txtAddProductoDescVar', JSON.stringify(txtAddProductoDescVar));
         formData.append('txtAddProductoValorVar', JSON.stringify(txtAddProductoValorVar));
         formData.append('txtAddProductoStockVar', JSON.stringify(txtAddProductoStockVar));
         formData.append('imagen', files);
-		
+
         $.ajax({
             url: base_url + "productos/insertproducto",
             method: "POST",

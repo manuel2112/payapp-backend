@@ -24,6 +24,7 @@
       <th scope="col">EMPRESA</th>
       <th scope="col">CIUDAD</th>
       <th scope="col">ACCIONES</th>
+      <th scope="col">PUSH</th>
     </tr>
   </thead>
 </table>
@@ -69,6 +70,15 @@ MODAL AGREGAR EMPRESA
 					</div>
 				</div>
 				
+        		<div class="col-12">
+					<div class="form-group">
+						<div class="input-group">
+							<span class="input-group-addon"><i class="fa fa-plus"></i></span>
+							<input type="text" class="form-control" name="txtKeyPush" id="txtKeyPush" placeholder="API KEY PUSH (*)..." required>
+						</div>
+					</div>
+				</div>
+
         		<div class="col-12 col-md-6">
 					<div class="form-group">
 						<div class="input-group">
@@ -82,7 +92,7 @@ MODAL AGREGAR EMPRESA
 					<div class="form-group">
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa fa-plus"></i></span>
-							<input type="text" class="form-control" name="txtEmpresaRazon" id="txtEmpresaRazon" placeholder="RAZÓN SOCIAL (*)..." required>
+							<input type="text" class="form-control" name="txtEmpresaRazon" id="txtEmpresaRazon" placeholder="RAZÓN SOCIAL...">
 						</div>
 					</div>
 				</div>
@@ -91,7 +101,7 @@ MODAL AGREGAR EMPRESA
 					<div class="form-group">
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa fa-plus"></i></span>
-							<input type="text" class="form-control" name="txtEmpresaRut" id="txtEmpresaRut" placeholder="EMPRESA RUT (*)..." required>
+							<input type="text" class="form-control" name="txtEmpresaRut" id="txtEmpresaRut" placeholder="EMPRESA RUT...">
 						</div>
 					</div>
 				</div>
@@ -280,6 +290,15 @@ MODAL EDITAR EMPRESA
 					</div>
 				</div>
 				
+        		<div class="col-12">
+					<div class="form-group">
+						<div class="input-group">
+							<span class="input-group-addon" data-toggle="tooltip" data-placement="top" title="API KEY PUSH"><i class="fa fa-plus"></i></span>
+							<input type="text" class="form-control" name="txtEditKeyPush" id="txtEditKeyPush" placeholder="API KEY PUSH (*)..." required>
+						</div>
+					</div>
+				</div>
+				
         		<div class="col-12 col-md-6">
 					<div class="form-group">
 						<div class="input-group">
@@ -294,7 +313,7 @@ MODAL EDITAR EMPRESA
 					<div class="form-group">
 						<div class="input-group">
 							<span class="input-group-addon" data-toggle="tooltip" data-placement="top" title="RAZÓN SOCIAL"><i class="fa fa-plus"></i></span>
-							<input type="text" class="form-control" name="txtEditRazon" id="txtEditRazon" placeholder="RAZÓN SOCIAL (*)..." required>
+							<input type="text" class="form-control" name="txtEditRazon" id="txtEditRazon" placeholder="RAZÓN SOCIAL...">
 						</div>
 					</div>
 				</div>
@@ -303,7 +322,7 @@ MODAL EDITAR EMPRESA
 					<div class="form-group">
 						<div class="input-group">
 							<span class="input-group-addon" data-toggle="tooltip" data-placement="top" title="EMPRESA RUT"><i class="fa fa-plus"></i></span>
-							<input type="text" class="form-control" name="txtEditRut" id="txtEditRut" placeholder="EMPRESA RUT (*)..." required>
+							<input type="text" class="form-control" name="txtEditRut" id="txtEditRut" placeholder="EMPRESA RUT...">
 						</div>
 					</div>
 				</div>

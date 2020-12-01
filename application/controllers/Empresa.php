@@ -45,6 +45,8 @@ class Empresa extends CI_Controller {
 				$botones .= $item->EMPRESA_FLAG ?  "<button class='btn btn-success btnActivarEmpresa' idempresa='".$item->EMPRESA_ID."'  estadoempresa='0' title='ACTIVAR/DESACTIVAR EMPRESA'><i class='fa fa-check fa-lg'></i></button>" : "<button class='btn btn-danger btnActivarEmpresa' idempresa='".$item->EMPRESA_ID."' estadoempresa='1' title='ACTIVAR/DESACTIVAR EMPRESA'><i class='fa fa-times fa-lg'></i></button>" ;
 				$botones .=  "</div>";
 
+				$testPush = "<button type='button' class='btn btn-primary btnPushTest' idempresa='".$item->EMPRESA_ID."'>TEST PUSH</button>";
+
 				$geo = $item->EMPRESA_DIRECCION ? "<i class='fa fa-check fa-lg btn btn-success'></i>" : "<i class='fa fa-times fa-lg btn btn-danger'></i>" ;
 
 				$dataJson .= '[
@@ -53,12 +55,14 @@ class Empresa extends CI_Controller {
 								  "'.$imagen.'",
 								  "'.$item->EMPRESA_NOMBRE.'",
 								  "'.$item->CIUDAD_NOMBRE.'",
-								  "'.$botones.'"
+								  "'.$botones.'",
+								  "'.$testPush.'"
 							  ],';
 			}
 		}else{
 				$dataJson .= '[
 								  "SIN INFORMACIÓN",
+								  "---",
 								  "---",
 								  "---",
 								  "---",
@@ -77,6 +81,7 @@ class Empresa extends CI_Controller {
 	public function insert()
 	{
 		$cmbCiudad 					= trim($this->input->post('cmbCiudad')) ? trim($this->input->post('cmbCiudad')) : NULL ;
+		$txtKeyPush 				= trim($this->input->post('txtKeyPush')) ? trim($this->input->post('txtKeyPush')) : NULL ;
 		$txtEmpresaNombre 			= trim($this->input->post('txtEmpresaNombre')) ? trim($this->input->post('txtEmpresaNombre')) : NULL ;
 		$txtEmpresaRazon 			= trim($this->input->post('txtEmpresaRazon')) ? trim($this->input->post('txtEmpresaRazon')) : NULL ;
 		$txtEmpresaRut 				= trim($this->input->post('txtEmpresaRut')) ? trim($this->input->post('txtEmpresaRut')) : NULL ;
@@ -100,7 +105,7 @@ class Empresa extends CI_Controller {
 		$txtEmpresaTipoDisenno		= NULL;
 		
 		//INGRESAR EMPRESA
-		$idEmpresa = $this->empresa_model->insertEmpresa($txtEmpresaNombre, $txtEmpresaRazon, $txtEmpresaRut, $txtEmpresaDireccion, $txtEmpresaLatitud, $txtEmpresaLongitud, $txtEmpresaFono, $txtEmpresaEmail, $txtEmpresaDescripcion, $txtEmpresaRutaLogo, $txtEmpresaUrlWeb, $txtEmpresaUrlFacebook, $txtEmpresaUrlInstagram, $txtEmpresaPass, $txtEmpresaPermiso, $txtEmpresaCodigoComercio, $cmbCiudad, $txtEmpresaTipoDisenno, $fechaIngreso);
+		$idEmpresa = $this->empresa_model->insertEmpresa($txtKeyPush, $txtEmpresaNombre, $txtEmpresaRazon, $txtEmpresaRut, $txtEmpresaDireccion, $txtEmpresaLatitud, $txtEmpresaLongitud, $txtEmpresaFono, $txtEmpresaEmail, $txtEmpresaDescripcion, $txtEmpresaRutaLogo, $txtEmpresaUrlWeb, $txtEmpresaUrlFacebook, $txtEmpresaUrlInstagram, $txtEmpresaPass, $txtEmpresaPermiso, $txtEmpresaCodigoComercio, $cmbCiudad, $txtEmpresaTipoDisenno, $fechaIngreso);
 
 		if( $tipoNegocio ){
 			foreach( $tipoNegocio as $tipo ){
@@ -187,6 +192,7 @@ class Empresa extends CI_Controller {
 		$data['tipoNegocio']	= $this->empresa_negocio_model->getEmpresaNegocioActive($idEmpresa);
 		echo json_encode($data);
 	}
+
 	public function geteditarval()
 	{
 		$idEmpresa 	= trim($this->input->post('idEmpresa'));
@@ -212,9 +218,11 @@ class Empresa extends CI_Controller {
 		$data['tipoNegocio'] = $tipoarray;
 		echo json_encode($data);
 	}
+
 	public function editar()
 	{
 		$idEmpresa		= $this->input->post('idEditEmpresa');
+		$txtEditKeyPush	= trim($this->input->post('txtEditKeyPush')) ? trim($this->input->post('txtEditKeyPush')) : NULL ;
 		$txtEmpresa 	= trim($this->input->post('txtEditEmpresa')) ? trim($this->input->post('txtEditEmpresa')) : NULL ;
 		$txtRazon 		= trim($this->input->post('txtEditRazon')) ? trim($this->input->post('txtEditRazon')) : NULL ;
 		$txtRut 		= trim($this->input->post('txtEditRut')) ? trim($this->input->post('txtEditRut')) : NULL ;
@@ -234,7 +242,7 @@ class Empresa extends CI_Controller {
 		$tipoNegocioObs	= $this->input->post('tipoNegocioObs') ;
 
 		//UPDATE EMPRESA
-		$this->empresa_model->updateEmpresa($idEmpresa, $txtEmpresa, $txtRazon, $txtRut, $txtDireccion, $txtLatitud, $txtLongitud, $txtFono, $txtEmail, $txtDescripcion, $txtWeb, $txtFacebook, $txtInstagram, $txtComercio, $cmbCiudad);
+		$this->empresa_model->updateEmpresa($idEmpresa, $txtEditKeyPush, $txtEmpresa, $txtRazon, $txtRut, $txtDireccion, $txtLatitud, $txtLongitud, $txtFono, $txtEmail, $txtDescripcion, $txtWeb, $txtFacebook, $txtInstagram, $txtComercio, $cmbCiudad);
 
 		//UPDATE T° NEGOCIO
 		if( $tipoNegocio ){
@@ -299,219 +307,6 @@ class Empresa extends CI_Controller {
 		redirect(base_url().'empresa');
 	}
 
-//	public function getfoto()
-//	{
-//		$idEmpresa 	= trim($this->input->post('idEmpresa'));
-//		
-//		$data = array();
-//		$data['empresa']	= $this->empresa_model->getEmpresaRow($idEmpresa);
-//		$data['fotos'] 		= $this->empresa_foto_model->getEmpresaFotoActive($idEmpresa);
-//		echo json_encode($data);
-//	}
-//    
-//	public function gethorario()
-//	{
-//		$idEmpresa 	= trim($this->input->post('idEmpresa'));
-//		
-//		$data = array();
-//		$data['empresa']	= $this->empresa_model->getEmpresaRow($idEmpresa);
-//		$data['horario']	= $this->empresa_horario_model->getEmpresaHorarioRow($idEmpresa);
-//		echo json_encode($data);
-//	}
-//    
-//	public function insertValidarEmpresa()
-//	{
-//		$nmbEmpresa	= trim($this->input->post('nmbEmpresa'));
-//		$existe = $this->empresa_model->getEmpresaNombreExiste($nmbEmpresa);
-//		if( count($existe) > 0 ){
-//			echo "EXISTE";
-//		}
-//	}
-//    
-//	public function updateValidarEmpresa()
-//	{
-//		$idEmpresa	= trim($this->input->post('idEmpresa'));
-//		$nmbEmpresa	= trim($this->input->post('nmbEmpresa'));
-//		
-//		$existe = $this->empresa_model->getEmpresaNombreExisteEdit($idEmpresa,$nmbEmpresa);
-//		if( count($existe) > 0 ){
-//			echo "EXISTE";
-//		}
-//	}
-//    
-//	public function insertValidarEmail()
-//	{
-//		$email 	= trim($this->input->post('email'));
-//		$existe = $this->empresa_model->getEmpresaEmailExiste($email);
-//		if( count($existe) > 0 ){
-//			echo "EXISTE";
-//		}
-//	}
-//    
-//	public function updateValidarEmail()
-//	{
-//		$idEmpresa	= trim($this->input->post('idEmpresa'));
-//		$email		= trim($this->input->post('emailEmpresa'));
-//		
-//		$existe = $this->empresa_model->getEmpresaEmailExisteEdit($idEmpresa,$email);
-//		if( count($existe) > 0 ){
-//			echo "EXISTE";
-//		}
-//	}
-//    
-//	public function inserthorario()
-//	{
-//		$idEmpresa	= trim($this->input->post('idempresa')) ? trim($this->input->post('idempresa')) : NULL ;
-//		$diaInicio	= trim($this->input->post('diainicio')) ? trim($this->input->post('diainicio')) : NULL ;
-//		$horaInicio	= trim($this->input->post('horainicio')) ? trim($this->input->post('horainicio')) : NULL ;
-//		$diaCierre	= trim($this->input->post('diacierre')) ? trim($this->input->post('diacierre')) : NULL ;
-//		$horaCierre	= trim($this->input->post('horacierre')) ? trim($this->input->post('horacierre')) : NULL ;
-//		
-//		$this->empresa_horario_model->insertEmpresaHorario( $idEmpresa, $diaInicio, $horaInicio, $diaCierre, $horaCierre );
-//		
-//		$data = array();
-//		$data['horario']	= $this->empresa_horario_model->getEmpresaHorarioRow($idEmpresa);
-//		echo json_encode($data);
-//	}
-//    
-//	public function deletehorario()
-//	{
-//		$idEmpresa 	= trim($this->input->post('idEmpresa'));
-//		$idHorario 	= trim($this->input->post('idHorario'));
-//		
-//		$this->empresa_horario_model->deleteEmpresaHorario($idHorario);
-//		
-//		$data = array();
-//		$data['empresa']	= $this->empresa_model->getEmpresaRow($idEmpresa);
-//		$data['horario']	= $this->empresa_horario_model->getEmpresaHorarioRow($idEmpresa);
-//		echo json_encode($data);
-//	}
-//    
-//	public function insertfoto()
-//	{
-//		$idEmpresa		= $this->input->post('idEmpresaFoto');
-//		$imagenes 		= $_FILES["file-es"];
-//		$fechaIngreso	= fechaNow();
-//		$ruta 			= NULL;
-//
-//		//FORMATEAR ESTADOS
-//		$this->empresa_foto_model->updateEmpresaFotoEstado($idEmpresa,FALSE);
-//
-//		//CREAR DIRECTORIO PARA GUARDAR FOTO
-//		if (!file_exists("upload/empresas/".$idEmpresa."/promocion")) {
-//			mkdir("upload/empresas/".$idEmpresa."/promocion", 0777, true);
-//		}
-//		$directorio = "upload/empresas/".$idEmpresa."/promocion";
-//		
-//		//ELIMINAR ARCHIVOS DEL DIRECTORIO
-//		$files = glob( $directorio . '/*' );
-//		foreach($files as $file){
-//			if(is_file($file))
-//			unlink($file);
-//		}
-//
-//		for($i = 0; $i < count($_FILES['file-es']['name']); $i++)
-//		{
-//			$imgType = $_FILES['file-es']['type'][$i];
-//			$imgTemp = $_FILES['file-es']['tmp_name'][$i];
-//
-//			//VALIDAR IMAGEN
-//			if( !empty($imgTemp) )
-//			{
-//				list($ancho,$alto) = getimagesize($imgTemp);
-//
-//				$anchoMaximo = 500;
-//				$altoProporcional = ($anchoMaximo * $alto) / $ancho;
-//
-//				$nuevoAncho	= $anchoMaximo;
-//				$nuevoAlto	= $altoProporcional;
-//
-//				if( $imgType == "image/jpeg" ){
-//					$aleatorio	= generaRandom();
-//					$ruta		= $directorio."/promocion_".$aleatorio.".jpg";
-//
-//					$origen		= imagecreatefromjpeg($imgTemp);
-//					$destino	= imagecreatetruecolor($nuevoAncho,$nuevoAlto);
-//
-//					imagecopyresized($destino,$origen,0,0,0,0,$nuevoAncho,$nuevoAlto,$ancho,$alto);
-//
-//					imagejpeg($destino,$ruta);
-//				}
-//
-//				if( $imgType == "image/png" ){
-//					$aleatorio	= generaRandom();
-//					$ruta		= $directorio."/promocion_".$aleatorio.".png";
-//
-//					$origen		= imagecreatefrompng($imgTemp);
-//					$destino	= imagecreatetruecolor($nuevoAncho,$nuevoAlto);
-//
-//					imagecopyresized($destino,$origen,0,0,0,0,$nuevoAncho,$nuevoAlto,$ancho,$alto);
-//
-//					imagejpeg($destino,$ruta);
-//				}
-//				$this->empresa_foto_model->insertEmpresaFoto($idEmpresa,$ruta,$fechaIngreso);
-//			}
-//			
-//			if( $i == 4 ){
-//				break;
-//			}
-//		}
-//
-//		$success = 'Destacado ingresado exitosamente.';
-//		$this->session->set_flashdata('exito',$success);
-//		redirect(base_url().'empresa');
-//	}
-//    
-//	public function deletefotopromo()
-//	{
-//		$idEmpresa 	= trim($this->input->post('idEmpresa'));
-//		$idFoto 	= trim($this->input->post('idfoto'));
-//
-//		$row = $this->empresa_foto_model->getEmpresaFotoRow($idFoto);
-//
-//		//ELIMINAR ARCHIVO DEL SERVIDOR
-//		$file = $row->FOTO_URL;
-//		unlink($file);
-//
-//		//ELIMINAR ARCHIVO DE LA BD
-//		$this->empresa_foto_model->deleteEmpresaFoto($idFoto);
-//
-//		$data = array();
-//		$data['fotos'] = $this->empresa_foto_model->getEmpresaFotoActive($idEmpresa);
-//		echo json_encode($data);
-//	}
-//    
-//	public function getplan()
-//	{
-//		$idEmpresa 	= trim($this->input->post('idEmpresa'));
-//		
-//		$data = array();
-//		$data['empresa']	= $this->empresa_model->getEmpresaRow($idEmpresa);
-//		$data['planes']		= $this->plan_model->getEmpresaPlan($idEmpresa);
-//		echo json_encode($data);
-//	}
-//    
-//	public function insertplan()
-//	{
-//		$idEmpresa	= trim($this->input->post('idempresa')) ? trim($this->input->post('idempresa')) : NULL ;
-//		$idPlan		= trim($this->input->post('cmbPlan')) ? trim($this->input->post('cmbPlan')) : NULL ;
-//		$fechaComienzo	= fechaNow();
-//		$fechaFin		= $idPlan != 1 ? fechaMasUnMes($fechaComienzo) : NULL ;
-//		
-//		//RECUPERAR ÚLTIMA FILA TRUE SI ES PLAN 1 ACTUALIZAR FECHA CIERRE
-//		$last = $this->plan_model->getEmpresaPlanLastRow($idEmpresa);
-//		if( count($last) > 0 && $last->PLAN_ID == 1 ){
-//			$this->plan_model->updateEmpresaPlanLastRow($last->EMPRESA_PLAN_ID,$fechaComienzo);
-//		}
-//		
-//		$this->plan_model->updateEmpresaPlan($idEmpresa);
-//		$this->plan_model->insertEmpresaPlan( $idEmpresa, $idPlan, $fechaComienzo, $fechaFin );
-//		
-//		$data = array();
-//		$data['planes']		= $this->plan_model->getEmpresaPlan($idEmpresa);
-//		echo json_encode($data);
-//	}
-    
 	public function updatepermisos()
 	{
 		$idEmpresa	= trim($this->input->post('idempresa')) ;

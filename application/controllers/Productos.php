@@ -10,8 +10,7 @@ class Productos extends CI_Controller {
 			$this->session->set_userdata('', current_url());
 			redirect(base_url('login'));
 		}
-		$this->session_id 	= $this->session->userdata('clienteapppay');
-				
+		$this->session_id 	= $this->session->userdata('clienteapppay');				
 	}
 	
 	public function index()
@@ -184,6 +183,7 @@ PRODUCTO
 		$chkProductoOferta		= trim($this->input->post("chkProductoOferta",true));
 		$chkProductoDest		= trim($this->input->post("chkProductoDest",true));
 		
+		$txtAddProductoNmb		= trim($this->input->post("txtAddProductoNmb",true));
 		$txtAddProductoValor	= trim($this->input->post("txtAddProductoValor",true));
 		$txtAddProductoStock	= trim($this->input->post("txtAddProductoStock",true)) != '' ? trim($this->input->post("txtAddProductoStock",true)) : NULL ;
 		
@@ -195,7 +195,7 @@ PRODUCTO
 		
 		//INSERTAR LOS PRECIOS
 		//VALORES BASE
-		$this->producto_variable_model->insertProductoVariable(NULL, $txtAddProductoValor,$txtAddProductoStock, $idProducto, TRUE);
+		$this->producto_variable_model->insertProductoVariable($txtAddProductoNmb, $txtAddProductoValor,$txtAddProductoStock, $idProducto, TRUE);
 		//VALORES VARIABLES
 		for( $i = 0 ; $i < count($txtAddProductoValorVar) ; $i++ ){
 			$stock	= trim($txtAddProductoStockVar[$i]) != '' ? trim($txtAddProductoStockVar[$i]) : NULL ;
@@ -245,7 +245,6 @@ PRODUCTO
 		}
 		
 		$data['ok'] = '1';
-		//$data['ok'] = $_FILES["imagen"]["tmp_name"];
 		echo json_encode($data);
 	}
 	
@@ -364,8 +363,7 @@ PRODUCTO
 
 /*=============================================
 IMAGENES GALERÍA PRODUCTO
-=============================================*/
-	
+=============================================*/	
 	
 	public function productogetgaleria()
 	{

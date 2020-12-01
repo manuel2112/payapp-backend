@@ -29,7 +29,7 @@ class plan_model extends CI_Model
         $query = $this->db
                         ->select("*")
                         ->from("empresa_plan")
-					    ->join('plan', 'plan.PLAN_ID = empresa_plan.PLAN_ID')
+                        ->join('plan', 'plan.PLAN_ID = empresa_plan.PLAN_ID')
                         ->where($where)
                       	->order_by("EMPRESA_PLAN_ID DESC")
                         ->get();

@@ -132,7 +132,7 @@ class producto_variable_model extends CI_Model
 	{
 		$where = array(
 				"PRODUCTO_ID" => $idProducto,
-				"PROVAR_DESC" => null
+				"PROVAR_BASE" => TRUE
 			);
 		$query = $this->db
 						->select("*")
@@ -146,7 +146,7 @@ class producto_variable_model extends CI_Model
 	{
 		$where = array(
 				"PRODUCTO_ID" => $idProducto,
-				"PROVAR_DESC" => null
+				"PROVAR_BASE" => TRUE
 			);
 		$query = $this->db
 						->select("*")

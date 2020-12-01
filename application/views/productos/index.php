@@ -1,7 +1,7 @@
 <div class="row mb-2">
 
 	<div class="col-12">
-	
+
 	<?php if ( $this->session->flashdata('exito') ){ ?>
 		<div class="alert alert-success">
 		  <?php echo $this->session->flashdata('exito');?>
@@ -9,7 +9,7 @@
 			<span aria-hidden="true">&times;</span>
 		  </button>
 		</div>
-	<?php }?>	
+	<?php }?>
 
     <?php if ( $this->session->userdata('adminapppay') ) {?>
 
@@ -128,12 +128,12 @@
 			$productoVar = variablePorProducto($itemProducto->PRODUCTO_ID);
 			foreach( $productoVar as $itemProductoVar ){
 				
-				$nmbVariable = $itemProductoVar->PROVAR_BASE ? "VALOR BASE" : $itemProductoVar->PROVAR_DESC ;
+				// $nmbVariable = $itemProductoVar->PROVAR_BASE ? "VALOR BASE" : $itemProductoVar->PROVAR_DESC ;
 				$subclass = $i % 2 == 0 ? 'par' : 'impar';
 			?>
 					<div class="mnu-row data <?php echo $subclass?>">
 					<div class="data-point"></div>
-					<div class="data-nmb-var"><h5><?php echo $nmbVariable?></h5></div>
+					<div class="data-nmb-var"><h5><?php echo $itemProductoVar->PROVAR_DESC?></h5></div>
 					<div class="data-valor-var"><h5><?php echo formatoDinero($itemProductoVar->PROVAR_VALOR)?></h5></div>
 					<div class="btn-group">
 					<button type="button" class="btn btn-outline-dark mdlEditVaVarOpen mb-2" data-toggle="modal" data-target="#mdlEditVaVar" title="EDITAR VALOR VARIABLE" idvavar="<?php echo $itemProductoVar->PROVAR_ID?>" nmbProducto="<?php echo $itemProducto->PRODUCTO_NOMBRE?>"><i class="fas fa-edit"></i></button>
@@ -341,6 +341,13 @@ MODAL PRODUCTO
 							</div>
 							
 							<hr>
+
+							<div class="form-group">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-plus"></i></span>
+									<input type="text" class="form-control" name="txtAddProductoNmb" id="txtAddProductoNmb" placeholder="INGRESAR NOMBRE BASE (*)..." required>
+								</div>
+							</div>
 
 							<div class="form-group">
 								<div class="input-group">

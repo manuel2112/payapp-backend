@@ -44,8 +44,8 @@ if(!function_exists('date_datetime'))
 if(!function_exists('zonaHoraria'))
 {	
 	function zonaHoraria(){		
-		//$zona = date_default_timezone_set('America/Santiago');
-		$zona = date_default_timezone_set("America/New_York");
+		$zona = date_default_timezone_set('America/Santiago');
+		//$zona = date_default_timezone_set("America/New_York");
 		return $zona;
 	}
 }
